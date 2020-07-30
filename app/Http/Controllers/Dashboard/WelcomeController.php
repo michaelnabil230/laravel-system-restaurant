@@ -108,7 +108,6 @@ class WelcomeController extends Controller
             'Sales30DayesDataDay' => $Sales30DayesDataDay,
             'Sales30DayesLabelsDay' => $Sales30DayesLabelsDay,
             'text' => __('site.sales_day', ['day' => '2020-' . $request->day]),
-
         ]);
     }
     public function month(Request $request)

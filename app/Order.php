@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'total_price',
+        'total_price','finel_total_price',
         'status', 'note',
+        'sale','paid',
+        'type_status','payment',
+        'user_id','driver_id'
     ];
 
     public function products()
@@ -16,7 +19,12 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'product_order')->withPivot('quantity');
 
     } //end of products
+    public function user()
+    {
+        return $this->belongsTo(User::class);
 
+    } //end of user
+    
     public function getStatusAttribute($value)
     {
         return __('site.order_status.' . $value);

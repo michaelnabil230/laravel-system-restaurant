@@ -47,7 +47,7 @@
                                     <p style="margin-top: 10px">@lang('site.loading')</p>
                                 </div>
 
-                                <div id="print-area"></div><!-- end of order product list -->
+                                <div id="print-area"></div><!-- end of list -->
                                 <button class="btn btn-block btn-primary print-btn"><i
                                         class="fa fa-print"></i> @lang('site.print')</button>
 

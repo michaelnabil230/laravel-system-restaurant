@@ -6,6 +6,8 @@ use App\Category;
 use App\Driver;
 use App\Http\Controllers\Controller;
 use App\Order;
+use App\Product;
+use Auth;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -60,7 +62,6 @@ class OrderController extends Controller
             'type_status' => 'required',
             'payment' => 'required',
         ]);
-
         $this->CreateOrUpdate($request);
 
         session()->flash('success', __('site.added_successfully'));
@@ -68,14 +69,26 @@ class OrderController extends Controller
 
     } //end of store
 
-        private function CreateOrUpdate($request)
+    private function CreateOrUpdate($request)
     {
-        $order = Order::create([
-            'total_price' => (float)$request->total_price,
-            'nota' => $request->nota,
-        ]);
+        $total_price = 0;
+        foreach ($request->products as $id => $quantity) {
+            $product = Product::FindOrFail($id);
+            $total_price += $product->price * $quantity['quantity'];
+        } //end of foreach
+
+        $sale = $request->sale;
+        $finel_total_price = $sale > 0 ? $total_price - ($total_price * $sale / 100) : $total_price;
+        $finel_total_price = ($finel_total_price * setting('value_added') / 100) + $finel_total_price;
+
+        $request_data = $request->except(['products']);
+        $request_data['total_price'] = $total_price;
+        $request_data['finel_total_price'] = $finel_total_price;
+        $request_data['user_id'] = Auth::id();
+
+        $order = Order::create($request_data);
         $order->products()->attach($request->products);
-    } //end of edit
+    } //end of CreateOrUpdate
 
     public function edit(Order $order)
     {
@@ -94,9 +107,9 @@ class OrderController extends Controller
             'form_btn_order_icon', 'drivers'
         ));
 
-    } //end of update
+    } //end of edit order
 
-public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order)
     {
         $request->validate([
             'products' => 'required|array',
@@ -108,21 +121,21 @@ public function update(Request $request, Order $order)
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.orders.index');
 
-    }
+    }//end of update order
 
-        public function offline(Request $request)
+    public function offline(Request $request)
     {
         foreach ($request->orders as $order) {
             $request = json_decode($order, true);
             $request['nota'] = null;
-            $this->CreateOrUpdate((object)$request);
+            $this->CreateOrUpdate((object) $request);
         }
 
         session()->flash('success', __('site.added_successfully'));
         return redirect()->route('dashboard.orders.index');
-    } //end of order
+    } //end of offline order
 
-public function destroy(Order $order)
+    public function destroy(Order $order)
     {
         $order->delete();
         session()->flash('success', __('site.deleted_successfully'));

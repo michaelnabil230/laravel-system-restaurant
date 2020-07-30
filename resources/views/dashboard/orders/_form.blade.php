@@ -145,11 +145,9 @@
                                         <tbody class="order-list">
                                         @if ($order)
                                             @foreach ($order->products as $product)
-                                                @php($data_product = json_encode(['id' => $product->id,'name' => $product->name,'quantity' => $product->pivot->quantity]))
-                                                <tr data-product="{{ $data_product }}"
-                                                    class="tr-product-{{ $product->id }}">
+                                                <tr class="tr-product-{{ $product->id }}">
                                                     <td>{{ $product->name }}</td>
-                                                    <td>{{ $product->pivot->quantity }}</td>
+                                                    <td><input type="hidden" name="products[{{ $product->id }}][quantity]" value="{{ $product->pivot->quantity }}">{{ $product->pivot->quantity }}</td>
                                                     <td class="product-price">{{ number_format($product->price * $product->pivot->quantity, 2) }}</td>
                                                     <td>
                                                         <button class="btn btn-danger btn-sm remove-product-btn"
@@ -171,16 +169,14 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label class="control-label" for="total"> @lang('site.total') : <span
-                                                        class="total-price">{{ $order ? number_format($order->total_price, 2) : 0}}</span></label>
-                                                <input type="hidden" name="total_price"
-                                                       value="{{ $order ? $order->total_price : 0 }}">
+                                                        class="total-price">{{ $order ? number_format($order->total_price, 2) : 0.00}}</span></label>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="control-label" for="sale"> @lang('site.sale') : <span
                                                         class="sale-price">0.00</span></label>
                                                 <input type="number" step="0.01" name="sale"
                                                        class="form-control input-sm sale" min="0"
-                                                       value="0">
+                                                       value="{{ $order ? $order->sale : 0.00}}">
                                             </div>
 
                                             <div class="col-md-6">
@@ -188,7 +184,7 @@
                                                     -> @lang('site.rest') : <span class="rest-price">0.00</span></label>
                                                 <input type="number" step="0.01" name="paid"
                                                        class="form-control input-sm paid" min="0"
-                                                       value="0">
+                                                       value="{{ $order ? $order->paid : 0.00}}">
                                             </div>
 
                                             <div class="col-md-6">
@@ -196,8 +192,8 @@
                                                        for="type_status"> @lang('site.type_status')</label>
                                                 <select name="type_status" id="type_status"
                                                         class="form-control {{ $errors->has('type_status') ? ' is-invalid' : '' }}">
-                                                    <option value="external" selected> @lang('site.external')</option>
-                                                    <option value="internal"> @lang('site.internal')</option>
+                                                    <option value="external" {{ $order ? $order->type_status == 'external' ? 'selected' : '' : 'selected'}}> @lang('site.external')</option>
+                                                    <option value="internal" {{ $order ? $order->type_status == 'internal' ? 'selected' : '' : ''}}> @lang('site.internal')</option>
                                                 </select>
                                                 @if ($errors->has('type_status'))
                                                     <div
@@ -209,8 +205,8 @@
                                                        for="payment"> @lang('site.type_payment')</label>
                                                 <select name="payment" id="payment"
                                                         class="form-control {{ $errors->has('payment') ? ' is-invalid' : '' }}">
-                                                    <option value="cash" selected> @lang('site.cash')</option>
-                                                    <option value="network"> @lang('site.network')</option>
+                                                    <option value="cash" {{ $order ? $order->payment == 'cash' ? 'selected' : '' : 'selected'}}> @lang('site.cash')</option>
+                                                    <option value="network" {{ $order ? $order->payment == 'network' ? 'selected' : '' : ''}}> @lang('site.network')</option>
                                                 </select>
                                                 @if ($errors->has('payment'))
                                                     <div class="invalid-feedback">{{ $errors->first('payment') }}</div>
@@ -222,8 +218,8 @@
                                                 <select name="driver_id" id="drivers"
                                                         class="form-control {{ $errors->has('drivers') ? ' is-invalid' : '' }}">
                                                     @forelse ($drivers as $index => $driver)
-                                                        <option
-                                                            {{ $index == 0 ? 'selected' : '' }} value="{{ $driver->id }}">{{ $driver->name }}</option>
+                                                        <option {{ $order ? $order->driver_id == $driver->id ? 'selected' : '' : $index == 0 ? 'selected' : ''}}
+                                                            value="{{ $driver->id }}">{{ $driver->name }}</option>
                                                     @empty
                                                         <option value="" disabled="disabled"
                                                                 selected>@lang('site.no_data_found')</option>
@@ -232,6 +228,10 @@
                                                 @if ($errors->has('drivers'))
                                                     <div class="invalid-feedback">{{ $errors->first('drivers') }}</div>
                                                 @endif
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="control-label" for="note"> @lang('site.note')</label>
+                                                <textarea name="note" id="note" class="form-control">{{ $order ? $order->note : old('note')}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -283,6 +283,13 @@
 </section>
 
 @push('scripts')
+    @if ($order)
+        <script> 
+            $(document).ready(function () {
+                calculateTotal();
+            });
+        </script>
+    @endif
     <script>
         $('.pro-qty').on('click', '.qtybtn', function () {
             var $button = $(this);
@@ -323,14 +330,8 @@
         $('input[type="radio"]').on('keyup change', function () {
             if ($(this).val() == "internal") {
                 $('select[name="delverry_name"]').attr("disabled", "disabled");
-                $('input[name="name_client"]').attr("disabled", "disabled");
-                $('input[name="address_client"]').attr("disabled", "disabled");
-                $('input[name="phone_client"]').attr("disabled", "disabled");
             } else {
                 $('select[name="delverry_name"]').removeAttr("disabled", "disabled");
-                $('input[name="name_client"]').removeAttr("disabled", "disabled");
-                $('input[name="address_client"]').removeAttr("disabled", "disabled");
-                $('input[name="phone_client"]').removeAttr("disabled", "disabled");
             }
         });
 
@@ -378,10 +379,10 @@
             calculateTotal();
         });//end of paid
 
-        //change paid
+        //change sale
         $('body').on('keyup change', '.sale', function () {
             calculateTotal();
-        });//end of paid
+        });//end of sale
 
 
         function calculateTotal() {
@@ -393,7 +394,6 @@
             });//end of product price
 
             $('.total-price').html($.number(price, 2));
-            $('input[name="total_price"]').val($.number(price, 2));
 
             //check if price > 0
             if (price > 0) {
@@ -426,26 +426,27 @@
                 $.each(orders, function (k, order) {
                     var products = '';
                     var data_product = {};
+                    var total_price = 0;
                     $.each(order['products'], function (ks, product) {
                         products += `
                         <tr>
                             <td>${ks + 1}</td>
                             <td>${product['name']}</td>
                             <td>${product['quantity']}</td>
-                            <td>${product['price']}</td>
+                            <td>${$.number(product['price'], 2)}</td>
                         </tr>`;
                         var id = product['id'];
                         data_product[id] = {
                             "quantity": product['quantity']
                         }
+                        total_price += product['price'];
                     });
                     FinelOrder['products'] = data_product;
-                    FinelOrder['total_price'] = order['total_price'];
 
                     OfflineOrders += `
                 <tr>
                     <td>${k + 1}</td>
-                    <td>${order['total_price']}</td>
+                    <td>${$.number(total_price, 2)}</td>
                     <input type="hidden" name="orders[]" value='${JSON.stringify(FinelOrder)}'>
                     <td>
                         <button data-toggle="collapse" data-target="#order-${k + 1}" onclick="event.preventDefault();" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i></button>
@@ -463,11 +464,11 @@
                                         </thead>
                                         <tbody>${products}</tbody>
                                     </table><!-- end of table -->
-                    </div>
-                    </th>
-                    </tr>
+                                </div>
+                            </th>
+                        </tr>
                     </td>
-                    </tr>`
+                </tr>`;
                     });
                 if (OfflineOrders == '') {
                     OfflineOrders =
@@ -493,13 +494,13 @@
                         products.push($(this).data('product'));
                     });
                     order['products'] = products;
-                    order['total_price'] = $('input[name="total_price"]').val();
 
                     orders.push(order);
                     localStorage.removeItem('orders');
 
                     localStorage.setItem('orders', JSON.stringify(orders));
                     $('.order-list tr').remove();
+                    calculateTotal();
                     $('span.number').text('0');
                     OrderListTr();
                     new Noty({

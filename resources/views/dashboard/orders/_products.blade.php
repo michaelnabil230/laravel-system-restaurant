@@ -1,5 +1,45 @@
 <div id="print-area">
-    <table class="table table-hover table-bordered">
+<style>
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+
+    table {
+        direction: rtl;
+        border-collapse: collapse;
+    }
+
+    .table-bordered thead td, .table-bordered thead th {
+        border-bottom-width: 2px;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table-bordered td, .table-bordered th {
+        border: 1px solid #dee2e6;
+    }
+
+    .table td, .table th {
+        padding: .75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    th {
+        text-align: inherit;
+    }
+</style>
+<table class="table table-bordered">
 
         <thead>
         <tr>

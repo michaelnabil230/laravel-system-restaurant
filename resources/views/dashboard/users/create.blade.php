@@ -22,9 +22,6 @@
         </div>
         <!-- /.content-header -->
         <!-- Main content -->
-        <style>.nav-item .active {
-                color: #495057 !important;
-            }</style>
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -89,6 +86,7 @@
                                                 $models = config('config_me.models');
                                                 $maps = config('config_me.maps')
                                             @endphp
+                                            <style>.card-header .nav-item .active {color: #495057 !important;}</style>
                                             <div class="card-header p-0 pt-1">
                                                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                                                     <li class="pt-2 px-3">
@@ -100,7 +98,7 @@
                                                                id="{{ $model }}-tab" data-toggle="pill"
                                                                href="#{{ $model }}" role="tab"
                                                                aria-controls="{{ $model }}"
-                                                               aria-selected="true">{{ $model }}</a>
+                                                               aria-selected="true">@lang('site.' .$model)</a>
                                                         </li>
                                                     @endforeach
                                                 </ul>

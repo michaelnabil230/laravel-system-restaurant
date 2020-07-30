@@ -158,7 +158,12 @@
             })
 
         });//end of order products click
+        //print order
+        $(document).on('click', '.print-btn', function () {
 
+            $('#print-area').printThis();
+
+        });//end of click print order
         //list all order products
         $('.order-status-btn').on('click', function (e) {
             e.preventDefault();
@@ -183,14 +188,6 @@
                 }
             });
         });//end of order status click
-
-        //print order
-        $(document).on('click', '.print-btn', function () {
-
-            $('#print-area').printThis();
-
-        });//end of click function
-
     </script>
 
 @endpush
