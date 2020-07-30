@@ -20,9 +20,9 @@ class DriverController extends Controller
 
     public function index(Request $request)
     {
-        $drivers = Driver::when($request->search, function ($q) use ($request) {
+        $drivers = Driver::when($request->search, function ($query) use ($request) {
 
-            return $q->where('name', 'like', '%' . $request->search . '%')
+            return $query->where('name', 'like', '%' . $request->search . '%')
                 ->orWhere('phone', 'like', '%' . $request->search . '%')
                 ->orWhere('nota', 'like', '%' . $request->search . '%');
 

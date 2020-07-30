@@ -91,36 +91,12 @@
                     </div>
                     <!-- ./col -->
                 </div><!-- /.row -->
-                <div class="row svsvs" style="display:none">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">@lang('site.orders_30_dayes')</h3>
-                                </div>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="position-relative">
-                                    <canvas id="svsvs" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">@lang('site.orders_30_dayes')</h3>
+                                    <h3 class="card-title sales-30-dayes-card-header">@lang('site.sales_30_dayes')</h3>
                                 </div>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -129,11 +105,14 @@
                                     <button type="button" class="btn btn-tool" data-card-widget="remove">
                                         <i class="fa fa-times"></i>
                                     </button>
+                                    <button type="button" class="btn d-none btn-sales-30-dayes btn-tool">
+                                        <i class="fa fa-arrow-left"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="position-relative mb-4">
-                                    <canvas id="orders-30-dayes" height="200"></canvas>
+                                    <canvas id="sales-30-dayes" height="200"></canvas>
                                 </div>
                             </div>
                         </div><!-- /.card -->
@@ -142,7 +121,7 @@
                         <div class="card">
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">@lang('site.sales')</h3>
+                                    <h3 class="card-title sales-2-years-card-header">@lang('site.sales_2_years')</h3>
                                 </div>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -151,11 +130,14 @@
                                     <button type="button" class="btn btn-tool" data-card-widget="remove">
                                         <i class="fa fa-times"></i>
                                     </button>
+                                    <button type="button" class="btn d-none btn-sales-2-years btn-tool">
+                                        <i class="fa fa-arrow-left"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="position-relative mb-4">
-                                    <canvas id="sales" height="200"></canvas>
+                                    <canvas id="sales-2-years" height="200"></canvas>
                                 </div>
                             </div>
                         </div><!-- /.card -->
@@ -239,9 +221,13 @@
     <!-- ChartJS -->
     <script src="{{ asset('dashboard/plugins/chart.js/Chart.min.js') }}"></script>
     <script>
+
+        var text_sales_30_dayes_card_header = "@lang('site.sales_30_dayes')";
+        var text_sales_2_years_card_header = "@lang('site.sales_2_years')";
+
         new Chart($('#pieChart'), {
             type: 'doughnut',
-            data: pieData = {
+            data: {
                 labels: {!! $labels !!},
                 datasets: [
                     {
@@ -255,27 +241,33 @@
             fontColor: '#495057',
             fontStyle: 'bold'
         }
+        var Sales2YearsThisYear = {!! $Sales2YearsThisYear !!};
+        var Sales2YearsLastYear = {!! $Sales2YearsLastYear !!};
+        var Sales2YearsLabels = {!! $Sales2YearsLabelsMonths !!};
 
-        new Chart($('#sales'), {
+        var Sales2Years = new Chart($('#sales-2-years'), {
             type: 'bar',
             data: {
-                labels: {!! $months !!},
+                labels: Sales2YearsLabels,
                 datasets: [
                     {
                         backgroundColor: '#007bff',
                         label: "@lang('site.this_year')",
                         borderColor: '#007bff',
-                        data: {!! $dataInThisYear !!}
+                        data: Sales2YearsThisYear
                     },
                     {
                         backgroundColor: '#ced4da',
                         label: "@lang('site.last_year')",
                         borderColor: '#ced4da',
-                        data: {!! $dataInLastYear !!}
+                        data: Sales2YearsLastYear
                     }
                 ]
             },
             options: {
+                onClick: function (s, ss) {
+                    ChartSales2YearsRequestAjex((ss[0]._index + 1));
+                },
                 maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
@@ -294,15 +286,15 @@
                 }
             }
         })
-        var ordersDataInMonth = {!! $ordersDataInMonth !!};
-        var labels = {!! $ordersLabelsInMonth !!};
-        new Chart($('#orders-30-dayes'), {
+        var Sales30DayesDataInMonth = {!! $sales30DayesDataInMonth !!};
+        var Sales30DayesLabels = {!! $sales30DayesLabelsInMonth !!};
+        var ChartSales30Dayes = new Chart($('#sales-30-dayes'), {
             type: 'line',
             data: {
-                labels: labels,
+                labels: Sales30DayesLabels,
                 datasets: [
                     {
-                        data: ordersDataInMonth,
+                        data: Sales30DayesDataInMonth,
                         backgroundColor: 'transparent',
                         borderColor: '#007bff',
                         pointBorderColor: '#007bff',
@@ -314,8 +306,7 @@
             },
             options: {
                 onClick: function (s, ss) {
-                    GetDataByDay(labels[ss[0]._index]);
-                    console.log('ss ', labels[ss[0]._index]);
+                    ChartSales30DayesRequestAjex(Sales30DayesLabels[ss[0]._index])
                 },
                 maintainAspectRatio: false,
                 tooltips: {
@@ -352,66 +343,48 @@
                 }
             }
         });
+        $('body').on('click', '.btn-sales-30-dayes', function (e) {
+            $(this).addClass('d-none');
+            $('.sales-30-dayes-card-header').text(text_sales_30_dayes_card_header);
 
-        function GetDataByDay(day) {
-            $('.svsvs').fadeIn(3000);
-
-            $.get("{{ route('dashboard.day') }}?day=" + day, function (data) {
-                console.log('data ', data);
-
-                new Chart($('#svsvs'), {
-                    type: 'line',
-                    data: {
-                        labels: data['ordersLabelsDay'],
-                        datasets: [
-                            {
-                                backgroundColor: 'transparent',
-                                borderColor: '#007bff',
-                                pointBorderColor: '#007bff',
-                                pointBackgroundColor: '#007bff',
-                                pointHoverBackgroundColor: '#007bff',
-                                pointHoverBorderColor: '#007bff',
-                                data: data['ordersDataDay']
-                            },
-
-                        ]
-                    },
-                    options: {
-                        tooltips: {
-                            mode: 'index',
-                            intersect: true
-                        },
-                        hover: {
-                            mode: 'index',
-                            intersect: true
-                        },
-                        legend: {
-                            display: false
-                        },
-                        maintainAspectRatio: false,
-                        scales: {
-                            yAxes: [{
-                                // display: false,
-                                ticks: $.extend({
-                                    beginAtZero: true,
-                                    // Include a dollar sign in the ticks
-                                    callback: function (value) {
-                                        if (value >= 1000) {
-                                            value /= 1000
-                                            value += 'k'
-                                        }
-
-                                        return 'LE ' + value
-                                    }
-                                }, ticksStyle)
-                            }],
-
-                        }
-                    }
-                })
-
+            UpdateChartSales30Dayes(ChartSales30Dayes,Sales30DayesDataInMonth,Sales30DayesLabels,function (s, ss) {
+                ChartSales30DayesRequestAjex(Sales30DayesLabels[ss[0]._index]);
+            })
+        });
+        $('body').on('click', '.btn-sales-2-years', function (e) {
+            $(this).addClass('d-none');
+            $('.sales-2-years-card-header').text(text_sales_2_years_card_header);
+            UpdateChartSales2Years(Sales2Years,Sales2YearsThisYear,Sales2YearsLastYear,Sales2YearsLabels,function (s, ss) {
+                ChartSales2YearsRequestAjex((ss[0]._index + 1));
+            })
+        });
+        function ChartSales2YearsRequestAjex(month){
+            $.get("{{ route('dashboard.month') }}?month=" + month, function (data) {
+                $('.sales-2-years-card-header').text(data['text']);
+                $('.btn-sales-2-years').removeClass('d-none');
+                UpdateChartSales2Years(Sales2Years,data['Sales2YearsYearInMonth'],data['Sales2YearsLastYearInMonth'],data['Sales2YearsLabels'],null)
             });
         }
+        function ChartSales30DayesRequestAjex(day){
+            $.get("{{ route('dashboard.day') }}?day=" + day, function (data) {
+                $('.sales-30-dayes-card-header').text(data['text']);
+                $('.btn-sales-30-dayes').removeClass('d-none');
 
+                UpdateChartSales30Dayes(ChartSales30Dayes,data['Sales30DayesDataDay'],data['Sales30DayesLabelsDay'],null)
+            });
+        }
+        function UpdateChartSales2Years(chart,data0,data1,labels,onClick){
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data0;
+            chart.data.datasets[1].data = data1;
+            chart.options.onClick = onClick,
+            chart.update();
+        }
+        function UpdateChartSales30Dayes(chart,data,labels,onClick){
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.options.onClick = onClick,
+            chart.update();
+        }
     </script>
 @endpush

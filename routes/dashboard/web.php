@@ -2,6 +2,8 @@
 
 Route::get('/', 'WelcomeController@index')->name('welcome');
 Route::get('/day', 'WelcomeController@day')->name('day');
+Route::get('/month', 'WelcomeController@month')->name('month');
+
 
 Route::get('/reports', 'ReportController@index')->name('reports.index');
 Route::post('/reports', 'ReportController@reports')->name('reports.post');

@@ -24,9 +24,9 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
-        $products = Product::when($request->search, function ($q) use ($request) {
+        $products = Product::when($request->search, function ($query) use ($request) {
 
-            return $q->Where('name_en', 'like', '%' . $request->search . '%')
+            return $query->Where('name_en', 'like', '%' . $request->search . '%')
                 ->orWhere('name_ar', 'like', '%' . $request->search . '%');
 
         })->when($request->category_id, function ($q) use ($request) {

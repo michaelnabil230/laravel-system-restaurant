@@ -20,7 +20,7 @@ class CategoryController extends Controller
     
     public function index(Request $request)
     {
-        $categories = Category::when($request->search, function ($q) use ($request) {
+        $categories = Category::when($request->search, function ($query) use ($request) {
 
             return $query->Where('name_en', 'like', '%' . $request->search . '%')
                 ->orWhere('name_ar', 'like', '%' . $request->search . '%');

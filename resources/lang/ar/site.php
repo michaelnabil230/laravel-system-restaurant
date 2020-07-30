@@ -101,12 +101,12 @@ return [
     'value_added' => 'القيمه المضافه',
     'last_orders' => 'اخر :count طلب',
     'best_selling_products' => 'المنتجات الأكثر مبيعا',
-    'sales' => 'مبيعات',
+    'sales_2_years' => 'مبيعات خلال سنتين',
     'last_year' => 'العام الماضي',
     'this_year' => 'هذا العام',
-    'orders_30_dayes' => 'طلبات خلال 30 يوم',
-
-
+    'sales_30_dayes' => 'مبيعات خلال 30 يوم',
+    'sales_day' => ' مبيعات يوم :day',
+    'sales_month' => 'مبيعات شهر :month',
     'backup_success' => 'نجاح النسخ الاحتياطي',
     'backup_failed' => 'فشل النسخ الاحتياطي',
     'generate_backup' => 'إنشاء نسخة احتياطية',
@@ -126,5 +126,6 @@ return [
     '' => '',
     '' => '',
     '' => '',
+
 
 ];

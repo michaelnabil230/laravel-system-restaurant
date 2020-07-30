@@ -22,8 +22,8 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $orders = Order::when($request->search, function ($q) use ($request) {
-            return $q->Where('id', $request->search);
+        $orders = Order::when($request->search, function ($query) use ($request) {
+            return $query->Where('id', $request->search);
         })->latest()->paginate();
         return view('dashboard.orders.index', compact('orders'));
 
