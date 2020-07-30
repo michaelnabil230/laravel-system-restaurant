@@ -107,7 +107,7 @@ class WelcomeController extends Controller
         return response()->json([
             'Sales30DayesDataDay' => $Sales30DayesDataDay,
             'Sales30DayesLabelsDay' => $Sales30DayesLabelsDay,
-            'text' => __('site.sales_day' ,['day' => '2020-' . $request->day])
+            'text' => __('site.sales_day', ['day' => '2020-' . $request->day]),
 
         ]);
     }
@@ -133,7 +133,7 @@ class WelcomeController extends Controller
             'Sales2YearsYearInMonth' => $Sales2YearsYearInMonth,
             'Sales2YearsLastYearInMonth' => $Sales2YearsLastYearInMonth,
             'Sales2YearsLabels' => $Sales2YearsLabels,
-            'text' => __('site.sales_month' ,['month' => date("F", strtotime($month)) ])
+            'text' => __('site.sales_month', ['month' => date("F", strtotime($month))]),
         ]);
     }
 } //end of controller
