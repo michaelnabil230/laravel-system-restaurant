@@ -39,16 +39,17 @@
                                         <label class="control-label" for="categories"> @lang('site.categories')</label>
                                         <select name="category_id" id="categories"
                                                 placeholder="@lang('site.categories')"
-                                                class="form-control {{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+                                                class="form-control @error('category_id') is-invalid @enderror">
                                             <option value="">@lang('site.all_categories')</option>
                                             @foreach ($categories as $category)
                                                 <option
                                                     value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('category_id'))
-                                            <div class="invalid-feedback">{{ $errors->first('category_id') }}</div>
-                                        @endif
+
+                                        @error ('category_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     @foreach (config('config_me.locales') as $locale)
@@ -57,36 +58,36 @@
                                                    for="name_{{ $locale }}"> @lang('site.' . $locale . '.name')</label>
                                             <input type="text" name="name_{{ $locale }}"
                                                    value="{{ old('name_'.$locale) }}"
-                                                   class="form-control {{ $errors->has('name_'.$locale) ? ' is-invalid' : '' }}"
+                                                   class="form-control @error('name_'.$locale) is-invalid @enderror"
                                                    id="name_{{ $locale }}"
                                                    placeholder="@lang('site.'.$locale . '.name')">
-                                            @if ($errors->has('name_'.$locale))
-                                                <div
-                                                    class="invalid-feedback">{{ $errors->first('name_'.$locale) }}</div>
-                                            @endif
+                                            @error ('name_'.$locale)
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     @endforeach
                                     <div class="form-group">
                                         <label class="control-label" for="price"> @lang('site.price')</label>
                                         <input type="number" step="0.01" name="price" value="{{ old('price') }}"
-                                               class="form-control {{ $errors->has('price') ? ' is-invalid' : '' }}"
+                                               class="form-control @error('price') is-invalid @enderror"
                                                id="price" placeholder="@lang('site.price')" step="0.01" min="1">
-                                        @if ($errors->has('price'))
-                                            <div class="invalid-feedback">{{ $errors->first('price') }}</div>
-                                        @endif
+
+                                        @error ('price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label" for="image">@lang('site.image')</label>
                                         <div class="custom-file">
                                             <input type="file" name="image"
-                                                   class="custom-file-input {{ $errors->has('image') ? ' is-invalid' : '' }}"
+                                                   class="custom-file-input @error('image') is-invalid @enderror"
                                                    id="image">
                                             <label class="custom-file-label"
                                                    for="image">@lang('site.choose_image')</label>
-                                            @if ($errors->has('image'))
-                                                <div class="invalid-feedback">{{ $errors->first('image') }}</div>
-                                            @endif
+                                            @error ('image')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 

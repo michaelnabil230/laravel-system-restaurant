@@ -40,26 +40,24 @@
                                                    for="name_{{ $locale }}"> @lang('site.' . $locale . '.name')</label>
                                             <input type="text" name="name_{{ $locale }}"
                                                    value="{{ old('name_'.$locale) }}"
-                                                   class="form-control {{ $errors->has('name_'.$locale) ? ' is-invalid' : '' }}"
+                                                   class="form-control @error ('name_'.$locale) is-invalid @enderror"
                                                    id="name_{{ $locale }}"
                                                    placeholder="@lang('site.'.$locale . '.name')">
-                                            @if ($errors->has('name_'.$locale))
-                                                <div
-                                                    class="invalid-feedback">{{ $errors->first('name_'.$locale) }}</div>
-                                            @endif
+                                            @error ('name_'.$locale)
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     @endforeach
                                     <div class="form-group">
                                         <label class="control-label"
                                                for="position"> @lang('site.position')</label>
                                         <input type="number" min="1" name="position" value="{{ old('position') }}"
-                                               class="form-control {{ $errors->has('position') ? ' is-invalid' : '' }}"
+                                               class="form-control @error ('position') is-invalid @enderror"
                                                id="position"
                                                placeholder="@lang('site.position')">
-                                        @if ($errors->has('position'))
-                                            <div
-                                                class="invalid-feedback">{{ $errors->first('position') }}</div>
-                                        @endif
+                                        @error ('position')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">

@@ -39,26 +39,24 @@
                                                for="name"> @lang('site.name')</label>
                                         <input type="text" name="name"
                                                value="{{ old('name') }}"
-                                               class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                               class="form-control @error('name') is-invalid @enderr"
                                                id="name"
                                                placeholder="@lang('site.name')">
-                                        @if ($errors->has('name'))
-                                            <div
-                                                class="invalid-feedback">{{ $errors->first('name') }}</div>
-                                        @endif
+                                        @error ('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     @for ($i = 0; $i < 2; $i++)
                                         <div class="form-group">
                                             <label class="control-label"
                                                    for="phone"> @lang('site.phone')</label>
                                             <input type="number" min="1" name="phone[]" value="{{ old('phone') }}"
-                                                   class="form-control {{ $errors->has('phone') ? ' is-invalid' : '' }}"
+                                                   class="form-control @error('phone') is-invalid @enderr"
                                                    id="phone"
                                                    placeholder="@lang('site.phone')">
-                                            @if ($errors->has('phone'))
-                                                <div
-                                                    class="invalid-feedback">{{ $errors->first('phone') }}</div>
-                                            @endif
+                                            @error ('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     @endfor
                                     <div class="form-group">

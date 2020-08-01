@@ -147,7 +147,10 @@
                                             @foreach ($order->products as $product)
                                                 <tr class="tr-product-{{ $product->id }}">
                                                     <td>{{ $product->name }}</td>
-                                                    <td><input type="hidden" name="products[{{ $product->id }}][quantity]" value="{{ $product->pivot->quantity }}">{{ $product->pivot->quantity }}</td>
+                                                    <td><input type="hidden"
+                                                               name="products[{{ $product->id }}][quantity]"
+                                                               value="{{ $product->pivot->quantity }}">{{ $product->pivot->quantity }}
+                                                    </td>
                                                     <td class="product-price">{{ number_format($product->price * $product->pivot->quantity, 2) }}</td>
                                                     <td>
                                                         <button class="btn btn-danger btn-sm remove-product-btn"
@@ -192,8 +195,10 @@
                                                        for="type_status"> @lang('site.type_status')</label>
                                                 <select name="type_status" id="type_status"
                                                         class="form-control type_status {{ $errors->has('type_status') ? ' is-invalid' : '' }}">
-                                                    <option value="external" {{ $order ? $order->type_status == 'external' ? 'selected' : '' : 'selected'}}> @lang('site.external')</option>
-                                                    <option value="internal" {{ $order ? $order->type_status == 'internal' ? 'selected' : '' : ''}}> @lang('site.internal')</option>
+                                                    <option
+                                                        value="external" {{ $order ? $order->type_status == 'external' ? 'selected' : '' : 'selected'}}> @lang('site.external')</option>
+                                                    <option
+                                                        value="internal" {{ $order ? $order->type_status == 'internal' ? 'selected' : '' : ''}}> @lang('site.internal')</option>
                                                 </select>
                                                 @if ($errors->has('type_status'))
                                                     <div
@@ -205,8 +210,10 @@
                                                        for="payment"> @lang('site.type_payment')</label>
                                                 <select name="payment" id="payment"
                                                         class="form-control payment {{ $errors->has('payment') ? ' is-invalid' : '' }}">
-                                                    <option value="cash" {{ $order ? $order->payment == 'cash' ? 'selected' : '' : 'selected'}}> @lang('site.cash')</option>
-                                                    <option value="network" {{ $order ? $order->payment == 'network' ? 'selected' : '' : ''}}> @lang('site.network')</option>
+                                                    <option
+                                                        value="cash" {{ $order ? $order->payment == 'cash' ? 'selected' : '' : 'selected'}}> @lang('site.cash')</option>
+                                                    <option
+                                                        value="network" {{ $order ? $order->payment == 'network' ? 'selected' : '' : ''}}> @lang('site.network')</option>
                                                 </select>
                                                 @if ($errors->has('payment'))
                                                     <div class="invalid-feedback">{{ $errors->first('payment') }}</div>
@@ -218,7 +225,8 @@
                                                 <select name="driver_id" id="drivers"
                                                         class="form-control driver_id {{ $errors->has('drivers') ? ' is-invalid' : '' }}">
                                                     @forelse ($drivers as $index => $driver)
-                                                        <option {{ $order ? $order->driver_id == $driver->id ? 'selected' : '' : $index == 0 ? 'selected' : ''}}
+                                                        <option
+                                                            {{ $order ? $order->driver_id == $driver->id ? 'selected' : '' : $index == 0 ? 'selected' : ''}}
                                                             value="{{ $driver->id }}">{{ $driver->name }}</option>
                                                     @empty
                                                         <option value="" disabled="disabled"
@@ -231,7 +239,8 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="control-label" for="note"> @lang('site.note')</label>
-                                                <textarea name="note" id="note" class="note form-control">{{ $order ? $order->note : old('note')}}</textarea>
+                                                <textarea name="note" id="note"
+                                                          class="note form-control">{{ $order ? $order->note : old('note')}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -284,7 +293,7 @@
 
 @push('scripts')
     @if ($order)
-        <script> 
+        <script>
             $(document).ready(function () {
                 calculateTotal();
             });
@@ -366,7 +375,7 @@
                 `<tr class="tr-product-${id}" data-product='${JSON.stringify(product)}'>
                     <td>${name}</td>
                     <td><input type="hidden" name="products[${id}][quantity]" value="${quantity}">${quantity}</td>
-                    <td class="product-price">${$.number((quantity * price) ,2)}</td>
+                    <td class="product-price">${$.number((quantity * price), 2)}</td>
                     <td><button class="btn btn-danger btn-sm remove-product-btn" data-id="${id}"><span class="fa fa-trash"></span></button></td>
                 </tr>`;
             $('.order-list').append(html);
@@ -445,7 +454,7 @@
                     FinelOrder = order;
                     FinelOrder['products'] = data_product;
 
-                    console.log('FinelOrder' ,FinelOrder);
+                    console.log('FinelOrder', FinelOrder);
                     OfflineOrders += `
                 <tr>
                     <td>${k + 1}</td>
@@ -467,11 +476,11 @@
                                         </thead>
                                         <tbody>${products}</tbody>
                                     </table><!-- end of table -->
-                                </div>
-                            </th>
-                        </tr>
+                    </div>
+                    </th>
+                    </tr>
                     </td>
-                </tr>`;
+                    </tr>`;
                     });
                 if (OfflineOrders == '') {
                     OfflineOrders =
@@ -504,7 +513,7 @@
                     order['payment'] = $('.payment').val();
                     order['driver_id'] = $('.driver_id').val();
 
-                    
+
                     orders.push(order);
                     localStorage.removeItem('orders');
 

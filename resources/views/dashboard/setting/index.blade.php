@@ -40,13 +40,12 @@
                                                for="name"> @lang('site.name')</label>
                                         <input type="text" name="name"
                                                value="{{ old('name',$setting->name) }}"
-                                               class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                               class="form-control @error('name') is-invalid @enderror"
                                                id="name"
                                                placeholder="@lang('site.name')">
-                                        @if ($errors->has('name'))
-                                            <div
-                                                class="invalid-feedback">{{ $errors->first('name') }}</div>
-                                        @endif
+                                        @error ('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label"
@@ -54,16 +53,17 @@
                                         <div class="input-group mb-3">
                                             <input type="number" name="value_added"
                                                    value="{{ old('value_added',$setting->value_added) }}"
-                                                   class="form-control {{ $errors->has('value_added') ? ' is-invalid' : '' }}"
+                                                   class="form-control @error('value_added') is-invalid @enderror"
                                                    id="value_added"
                                                    placeholder="@lang('site.value_added')"
                                                    step="0.01" min="1">
                                             <div class="input-group-append">
                                                 <span class="input-group-text"><i class="fa fa-percent"></i></span>
                                             </div>
-                                            @if ($errors->has('value_added'))
-                                                <div class="invalid-feedback">{{ $errors->first('value_added') }}</div>
-                                            @endif
+
+                                            @error ('value_added')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -71,13 +71,14 @@
                                         <label class="control-label" for="logo">@lang('site.logo')</label>
                                         <div class="custom-file">
                                             <input type="file" name="logo"
-                                                   class="custom-file-input {{ $errors->has('logo') ? ' is-invalid' : '' }}"
+                                                   class="custom-file-input @error('logo') is-invalid @enderror"
                                                    id="logo">
                                             <label class="custom-file-label"
                                                    for="logo">@lang('site.choose_logo')</label>
-                                            @if ($errors->has('logo'))
-                                                <div class="invalid-feedback">{{ $errors->first('logo') }}</div>
-                                            @endif
+
+                                            @error ('logo')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 

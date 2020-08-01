@@ -38,47 +38,50 @@
                                         <label class="control-label"
                                                for="name"> @lang('site.name')</label>
                                         <input type="text" name="name" value="{{ old('name') }}"
-                                               class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                               class="form-control @error('name') is-invalid @enderror"
                                                id="name"
                                                placeholder="@lang('site.name')">
-                                        @if ($errors->has('name'))
-                                            <div class="invalid-feedback">{{ $errors->first('name') }}</div>
-                                        @endif
+
+                                        @error ('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label"
                                                for="email"> @lang('site.email')</label>
                                         <input type="text" name="email" value="{{ old('email') }}"
-                                               class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                               class="form-control @error('email') is-invalid @enderror"
                                                id="email"
                                                placeholder="@lang('site.email')">
-                                        @if ($errors->has('email'))
-                                            <div class="invalid-feedback">{{ $errors->first('email') }}</div>
-                                        @endif
+
+                                        @error ('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label"
                                                for="password"> @lang('site.password')</label>
                                         <input type="text" name="password" value="{{ old('password') }}"
-                                               class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                               class="form-control @error('password') is-invalid @enderror"
                                                id="password"
                                                placeholder="@lang('site.password')">
-                                        @if ($errors->has('password'))
-                                            <div class="invalid-feedback">{{ $errors->first('password') }}</div>
-                                        @endif
+
+                                        @error ('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label"
                                                for="password_confirmation"> @lang('site.password_confirmation')</label>
                                         <input type="text" name="password_confirmation"
                                                value="{{ old('password_confirmation') }}"
-                                               class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"
+                                               class="form-control @error('password_confirmation') is-invalid @enderror"
                                                id="password_confirmation"
                                                placeholder="@lang('site.password_confirmation')">
-                                        @if ($errors->has('password_confirmation'))
-                                            <div
-                                                class="invalid-feedback">{{ $errors->first('password_confirmation') }}</div>
-                                        @endif
+
+                                        @error ('password_confirmation')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <div class="card card-primary card-tabs">
@@ -86,7 +89,9 @@
                                                 $models = config('config_me.models');
                                                 $maps = config('config_me.maps')
                                             @endphp
-                                            <style>.card-header .nav-item .active {color: #495057 !important;}</style>
+                                            <style>.card-header .nav-item .active {
+                                                    color: #495057 !important;
+                                                }</style>
                                             <div class="card-header p-0 pt-1">
                                                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                                                     <li class="pt-2 px-3">
@@ -94,7 +99,7 @@
                                                     </li>
                                                     @foreach ($models as $index=>$model)
                                                         <li class="nav-item">
-                                                            <a class="nav-link {{ $index == 0 ? 'active' : '' }}"
+                                                            <a class="nav-link {{ $index == 0 ? 'active @enderror"
                                                                id="{{ $model }}-tab" data-toggle="pill"
                                                                href="#{{ $model }}" role="tab"
                                                                aria-controls="{{ $model }}"
@@ -107,7 +112,7 @@
                                                 <div class="tab-content" id="custom-tabs-two-tabContent">
                                                     @foreach ($models as $index=>$model)
                                                         <div
-                                                            class="tab-pane fade {{ $index == 0 ? 'show active' : '' }} "
+                                                            class="tab-pane fade {{ $index == 0 ? 'show active @enderror "
                                                             id="{{ $model }}" role="tabpanel"
                                                             aria-labelledby="{{ $model }}-tab">
                                                             @foreach ($maps as $map)

@@ -30,7 +30,7 @@
 <div class="login-box">
     <div class="login-logo">
         <img style="float: initial;max-height: 100px;border-radius: .25rem;" src="{{ setting('logo_path') }}" alt="Logo"
-             class="brand-image"><br>
+            class="brand-image"><br>
         <a href="#"><b>{{ setting('name') }}</b></a>
     </div>
     <!-- /.login-logo -->
@@ -41,29 +41,29 @@
                 {{ method_field('post') }}
                 <div class="input-group mb-3">
                     <input type="email" name="email"
-                           class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
+                           class="form-control @error('email') is-invalid @enderror"
                            placeholder="{{ __('E-Mail Address') }}">
                     <div class="input-group-append">
                         <span class="fa fa-envelope input-group-text"></span>
                     </div>
-                    @if ($errors->has('email'))
+                    @error ('email')
                         <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-                    @endif
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" name="password"
-                           class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                           class="form-control @error('password') is-invalid @enderror"
                            placeholder="{{ __('Password') }}">
                     <div class="input-group-append">
                         <span class="fa fa-lock input-group-text"></span>
                     </div>
-                    @if ($errors->has('password'))
+                    @error ('password')
                         <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-                    @endif
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="checkbox">
                     <label>

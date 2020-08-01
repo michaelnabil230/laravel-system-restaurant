@@ -207,7 +207,7 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="chart-responsive">
-                                    <canvas id="pieChart" height="150"></canvas>
+                                    <canvas id="products_most" height="500"></canvas>
                                 </div><!-- ./chart-responsive -->
                             </div><!-- /.card-body -->
                         </div><!-- /.card -->
@@ -225,7 +225,7 @@
         var text_sales_30_dayes_card_header = "@lang('site.sales_30_dayes')";
         var text_sales_2_years_card_header = "@lang('site.sales_2_years')";
 
-        new Chart($('#pieChart'), {
+        new Chart($('#products_most'), {
             type: 'doughnut',
             data: {
                 labels: {!! $labels !!},
@@ -347,44 +347,48 @@
             $(this).addClass('d-none');
             $('.sales-30-dayes-card-header').text(text_sales_30_dayes_card_header);
 
-            UpdateChartSales30Dayes(ChartSales30Dayes,Sales30DayesDataInMonth,Sales30DayesLabels,function (s, ss) {
+            UpdateChartSales30Dayes(ChartSales30Dayes, Sales30DayesDataInMonth, Sales30DayesLabels, function (s, ss) {
                 ChartSales30DayesRequestAjex(Sales30DayesLabels[ss[0]._index]);
             })
         });
         $('body').on('click', '.btn-sales-2-years', function (e) {
             $(this).addClass('d-none');
             $('.sales-2-years-card-header').text(text_sales_2_years_card_header);
-            UpdateChartSales2Years(Sales2Years,Sales2YearsThisYear,Sales2YearsLastYear,Sales2YearsLabels,function (s, ss) {
+            UpdateChartSales2Years(Sales2Years, Sales2YearsThisYear, Sales2YearsLastYear, Sales2YearsLabels, function (s, ss) {
                 ChartSales2YearsRequestAjex((ss[0]._index + 1));
             })
         });
-        function ChartSales2YearsRequestAjex(month){
+
+        function ChartSales2YearsRequestAjex(month) {
             $.get("{{ route('dashboard.month') }}?month=" + month, function (data) {
                 $('.sales-2-years-card-header').text(data['text']);
                 $('.btn-sales-2-years').removeClass('d-none');
-                UpdateChartSales2Years(Sales2Years,data['Sales2YearsYearInMonth'],data['Sales2YearsLastYearInMonth'],data['Sales2YearsLabels'],null)
+                UpdateChartSales2Years(Sales2Years, data['Sales2YearsYearInMonth'], data['Sales2YearsLastYearInMonth'], data['Sales2YearsLabels'], null)
             });
         }
-        function ChartSales30DayesRequestAjex(day){
+
+        function ChartSales30DayesRequestAjex(day) {
             $.get("{{ route('dashboard.day') }}?day=" + day, function (data) {
                 $('.sales-30-dayes-card-header').text(data['text']);
                 $('.btn-sales-30-dayes').removeClass('d-none');
 
-                UpdateChartSales30Dayes(ChartSales30Dayes,data['Sales30DayesDataDay'],data['Sales30DayesLabelsDay'],null)
+                UpdateChartSales30Dayes(ChartSales30Dayes, data['Sales30DayesDataDay'], data['Sales30DayesLabelsDay'], null)
             });
         }
-        function UpdateChartSales2Years(chart,data0,data1,labels,onClick){
+
+        function UpdateChartSales2Years(chart, data0, data1, labels, onClick) {
             chart.data.labels = labels;
             chart.data.datasets[0].data = data0;
             chart.data.datasets[1].data = data1;
             chart.options.onClick = onClick,
-            chart.update();
+                chart.update();
         }
-        function UpdateChartSales30Dayes(chart,data,labels,onClick){
+
+        function UpdateChartSales30Dayes(chart, data, labels, onClick) {
             chart.data.labels = labels;
             chart.data.datasets[0].data = data;
             chart.options.onClick = onClick,
-            chart.update();
+                chart.update();
         }
     </script>
 @endpush
