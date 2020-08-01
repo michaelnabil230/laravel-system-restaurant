@@ -33,7 +33,7 @@ class BackupController extends Controller
                 'name' => end($arr),
                 'path' => $backup,
                 'size' => number_format(filesize($backup) / 1048576, 2) . 'MB',
-                'time' => date('Y-m-d H:i:s', filemtime($backup)),
+                'time' => date('Y-m-d g:i:s A', filemtime($backup)),
             ];
         });
 

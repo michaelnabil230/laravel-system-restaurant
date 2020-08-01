@@ -72,7 +72,7 @@
                                                         {{ $order->status }}
                                                     </button>
                                                 </td>
-                                                <td>{{ $order->created_at->toFormattedDateString() }}</td>
+                                                <td>{{ $order->created_at->format('Y-m-d g:i:s A') }}</td>
                                                 <td class="py-0 align-middle">
                                                     <div class="btn-group btn-group-sm">
                                                         <button class="btn btn-primary btn-sm order-products"
