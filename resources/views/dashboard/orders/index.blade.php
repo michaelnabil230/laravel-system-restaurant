@@ -63,7 +63,7 @@
                                         @forelse ($orders as $order)
                                             <tr>
                                                 <td>{{ $order->id }}</td>
-                                                <td>{{ number_format($order->total_price, 2) }}</td>
+                                                <td>{{ number_format($order->total_price, 2) }} L.E</td>
                                                 <td>
                                                     <button
                                                         data-url="{{ route('dashboard.orders.update_status', $order->id) }}"

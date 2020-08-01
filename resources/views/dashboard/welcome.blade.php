@@ -207,7 +207,7 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="chart-responsive">
-                                    <canvas id="products_most" height="500"></canvas>
+                                    <canvas id="products_most" height="150"></canvas>
                                 </div><!-- ./chart-responsive -->
                             </div><!-- /.card-body -->
                         </div><!-- /.card -->

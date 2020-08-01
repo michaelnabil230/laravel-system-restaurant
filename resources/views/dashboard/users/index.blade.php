@@ -68,6 +68,11 @@
                                                 <td class="py-0 align-middle">
                                                     <div class="btn-group btn-group-sm">
                                                         @can ('update_users')
+                                                            <a href="{{ route('dashboard.users.show', $user->id) }}"
+                                                               class="btn btn-md btn-warning"><i
+                                                                    class="fa fa-eye"></i> @lang('site.show')</a>
+                                                        @endcan
+                                                        @can ('update_users')
                                                             <a href="{{ route('dashboard.users.edit', $user->id) }}"
                                                                class="btn btn-md btn-info"><i
                                                                     class="fa fa-edit"></i> @lang('site.edit')</a>

@@ -73,7 +73,7 @@
                                     <div class="form-group">
                                         <label class="control-label"
                                                for="password_confirmation"> @lang('site.password_confirmation')</label>
-                                        <input type="text" name="password_confirmation"
+                                        <input type="password" name="password_confirmation"
                                                class="form-control @error('password_confirmation') is-invalid @enderror"
                                                id="password_confirmation"
                                                placeholder="@lang('site.password_confirmation')">
@@ -108,13 +108,12 @@
                                                 <div class="tab-content" id="custom-tabs-two-tabContent">
                                                     @foreach ($models as $index=>$model)
                                                         <div
-                                                            class="tab-pane fade {{ $index == 0 ? 'show active' : '' }} "
+                                                            class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}"
                                                             id="{{ $model }}" role="tabpanel"
                                                             aria-labelledby="{{ $model }}-tab">
                                                             @foreach ($maps as $map)
                                                                 <label><input type="checkbox" name="permissions[]"
-                                                                    {{ $user->hasPermissionTo($map . '_' . $model) ? 'checked @enderror      value="{{ $map . '_' . $model }}
-                                                                    "> @lang('site.' .$map)
+                                                                    {{ $user->hasPermissionTo($map . '_' . $model) ? 'checked' : '' }} value="{{ $map . '_' . $model }}"> @lang('site.' .$map)
                                                                 </label>
                                                             @endforeach
                                                         </div>

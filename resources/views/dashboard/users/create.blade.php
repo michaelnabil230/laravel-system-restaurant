@@ -61,7 +61,7 @@
                                     <div class="form-group">
                                         <label class="control-label"
                                                for="password"> @lang('site.password')</label>
-                                        <input type="text" name="password" value="{{ old('password') }}"
+                                        <input type="password" name="password" value="{{ old('password') }}"
                                                class="form-control @error('password') is-invalid @enderror"
                                                id="password"
                                                placeholder="@lang('site.password')">
@@ -73,7 +73,7 @@
                                     <div class="form-group">
                                         <label class="control-label"
                                                for="password_confirmation"> @lang('site.password_confirmation')</label>
-                                        <input type="text" name="password_confirmation"
+                                        <input type="password" name="password_confirmation"
                                                value="{{ old('password_confirmation') }}"
                                                class="form-control @error('password_confirmation') is-invalid @enderror"
                                                id="password_confirmation"
@@ -89,7 +89,9 @@
                                                 $models = config('config_me.models');
                                                 $maps = config('config_me.maps')
                                             @endphp
-                                            <style>.card-header .nav-item .active {color: #495057 !important;}</style>
+                                            <style>.card-header .nav-item .active {
+                                                    color: #495057 !important;
+                                                }</style>
                                             <div class="card-header p-0 pt-1">
                                                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                                                     <li class="pt-2 px-3">

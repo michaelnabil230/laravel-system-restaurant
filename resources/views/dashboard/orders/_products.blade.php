@@ -1,4 +1,4 @@
-<div id="print-area">
+<div id="print-area" style="direction: rtl;">
     <style>
         .table-bordered {
             border: 1px solid #dee2e6;
@@ -39,6 +39,13 @@
             text-align: inherit;
         }
     </style>
+    <div class="text-center">
+        <img style="width: 130px;border-radius: .25rem;" src="{{ setting('logo_path') }}">
+    </div>
+    <br>
+    <div class="text-center">
+        <h4>فاتورة / Invoice</h4>
+    </div>
     <table class="table table-bordered">
 
         <thead>
@@ -59,7 +66,18 @@
         @endforeach
         </tbody>
     </table>
-    <h3>@lang('site.total') <span>{{ number_format($order->total_price, 2) }}</span></h3>
+    <h5>@lang('site.user_name') : <span>{{ $order->user_id ? $order->user->name : '' }}</span></h5>
+    <h5>@lang('site.driver_name') : <span>{{ $order->driver_id ? $order->driver->name : '' }}</span></h5>
+
+    <h5>@lang('site.note') : <span>{{ $order->note }}</span></h5>
+    <h5>@lang('site.type_payment') : <span> @lang('site.'.$order->payment)</span></h5>
+    <h5>@lang('site.type_status') : <span>@lang('site.'.$order->type_status)</span></h5>
+    <h5>@lang('site.order_status.name') : <span>{{ $order->status }}</span></h5>
+    <h5>@lang('site.paid') : <span>{{ number_format($order->paid, 2) }} L.E</span></h5>
+    <h5>@lang('site.sale') : <span>{{ number_format($order->sale, 2) }} %</span></h5>
+    <h5>@lang('site.value_added') : <span>{{ number_format(setting('value_added'), 2) }} %</span></h5>
+    <h5>@lang('site.total_price') : <span>{{ number_format($order->total_price, 2) }} L.E</span></h5>
+    <h5>@lang('site.finel_total_price') : <span>{{ number_format($order->finel_total_price, 2) }} L.E</span></h5>
 
 </div>
 

@@ -28,7 +28,9 @@ Route::get('/orders/{order}/products', 'OrderController@products')->name('orders
 Route::put('/orders/{order}/update_status', 'OrderController@update_status')->name('orders.update_status');
 
 //user routes
-Route::resource('users', 'UserController')->except(['show']);
+Route::resource('users', 'UserController');
+Route::get('users/{user}/day', 'UserController@day')->name('users.day');
+Route::get('users/{user}/month', 'UserController@month')->name('users.month');
 
 
 Route::post('orders/offline', 'OrderController@offline')->name('orders.offline');

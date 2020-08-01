@@ -51,7 +51,7 @@
                                             <label class="control-label"
                                                    for="phone"> @lang('site.phone')</label>
                                             <input type="number" min="1" name="phone[]" value="{{ old('phone.'.$i) }}"
-                                                   class="form-control @error('phone') is-invalid @enderror"
+                                                   class="form-control @error('phone.'.$i) is-invalid @enderror"
                                                    id="phone"
                                                    placeholder="@lang('site.phone')">
                                             @error('phone.'.$i)

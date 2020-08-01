@@ -24,7 +24,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
 
     } //end of user
-    
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class);
+
+    } //end of driver
     public function getStatusAttribute($value)
     {
         return __('site.order_status.' . $value);

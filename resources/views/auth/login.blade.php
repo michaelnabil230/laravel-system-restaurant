@@ -30,7 +30,7 @@
 <div class="login-box">
     <div class="login-logo">
         <img style="float: initial;max-height: 100px;border-radius: .25rem;" src="{{ setting('logo_path') }}" alt="Logo"
-            class="brand-image"><br>
+             class="brand-image"><br>
         <a href="#"><b>{{ setting('name') }}</b></a>
     </div>
     <!-- /.login-logo -->
@@ -47,7 +47,7 @@
                         <span class="fa fa-envelope input-group-text"></span>
                     </div>
                     @error ('email')
-                        <span class="invalid-feedback" role="alert">
+                    <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
@@ -60,7 +60,7 @@
                         <span class="fa fa-lock input-group-text"></span>
                     </div>
                     @error ('password')
-                        <span class="invalid-feedback" role="alert">
+                    <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror

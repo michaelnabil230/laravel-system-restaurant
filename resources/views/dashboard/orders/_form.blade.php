@@ -69,7 +69,7 @@
                                                      src="{{ $product->image_path }}">
                                                 <div class="text-center">
                                                     <h6>{{ $product->name }}<br>{{ number_format($product->price, 2) }}
-                                                        S.R</h6>
+                                                        L.E</h6>
                                                     <div class="quantity">
                                                         <div class="pro-qty">
                                                             <span class="dec qtybtn">-</span>
@@ -170,24 +170,54 @@
 
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <label class="control-label" for="total"> @lang('site.total') : <span
-                                                        class="total-price">{{ $order ? number_format($order->total_price, 2) : 0.00}}</span></label>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label"
+                                                           for="value_added"> @lang('site.value_added')</label>
+                                                    <div class="input-group mb-3">
+                                                        <input disabled="disabled"
+                                                               value="{{ number_format(setting('value_added'), 2) }}"
+                                                               class="form-control input-sm"
+                                                               id="value_added">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text"><i class="fa fa-percent"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="control-label" for="sale"> @lang('site.sale') : <span
-                                                        class="sale-price">0.00</span></label>
-                                                <input type="number" step="0.01" name="sale"
-                                                       class="form-control input-sm sale" min="0"
-                                                       value="{{ $order ? $order->sale : 0.00}}">
+                                                <label class="control-label" for="total"> @lang('site.total') : <span
+                                                        class="total-price">{{ $order ? number_format($order->total_price, 2) : 0.00 }} L.E</span></label>
                                             </div>
 
                                             <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="sale"> @lang('site.sale') : <span
+                                                            class="sale-price">0.00 L.E</span></label>
+                                                    <div class="input-group mb-3">
+                                                        <input type="number" step="0.01" name="sale"
+                                                               value="{{ $order ? $order->sale : 0.00 }}"
+                                                               class="form-control input-sm sale"
+                                                               id="value_added"
+                                                               min="0">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text"><i class="fa fa-percent"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="control-label"
+                                                       for="finel_total_price"> @lang('site.finel_total_price') : <span
+                                                        class="finel_total_price">{{ $order ? number_format($order->finel_total_price, 2) : 0.00 }} L.E</span></label>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label class="control-label" for="paid"> @lang('site.paid')
-                                                    -> @lang('site.rest') : <span class="rest-price">0.00</span></label>
+                                                    -> @lang('site.rest') : <span
+                                                        class="rest-price">0.00 L.E</span></label>
                                                 <input type="number" step="0.01" name="paid"
                                                        class="form-control input-sm paid" min="0"
-                                                       value="{{ $order ? $order->paid : 0.00}}">
+                                                       value="{{ $order ? $order->paid : 0.00 }}">
                                             </div>
 
                                             <div class="col-md-6">
@@ -237,7 +267,7 @@
                                                     <div class="invalid-feedback">{{ $errors->first('drivers') }}</div>
                                                 @endif
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <label class="control-label" for="note"> @lang('site.note')</label>
                                                 <textarea name="note" id="note"
                                                           class="note form-control">{{ $order ? $order->note : old('note')}}</textarea>
@@ -413,9 +443,15 @@
 
             var paid = Number($('.paid').val());
             var sale = Number($('.sale').val());
+            var value_added = Number($('#value_added').val());
+
             var total_price = sale > 0 ? price - (price * sale / 100) : price;
-            $('.rest-price').html($.number(paid - total_price, 2));
-            $('.sale-price').html($.number(total_price, 2));
+            var finel_total_price = (total_price * value_added / 100) + total_price;
+
+            $('.rest-price').html($.number(paid - finel_total_price, 2) + ' L.E');
+            $('.sale-price').html($.number(finel_total_price, 2) + ' L.E');
+            $('.finel_total_price').html($.number(finel_total_price, 2) + ' L.E');
+
 
         }//end of calculate total
 

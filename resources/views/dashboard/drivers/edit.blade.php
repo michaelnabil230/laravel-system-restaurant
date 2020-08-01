@@ -42,7 +42,6 @@
                                                class="form-control @error('name') is-invalid @enderror"
                                                id="name"
                                                placeholder="@lang('site.name')">
-
                                         @error ('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -53,7 +52,7 @@
                                                    for="phone"> @lang('site.phone')</label>
                                             <input type="number" min="1" name="phone[]"
                                                    value="{{ $driver->phone[$i] ?? '' }}"
-                                                   class="form-control @error('phone') is-invalid @enderror"
+                                                   class="form-control @error('phone.'.$i) is-invalid @enderror"
                                                    id="phone"
                                                    placeholder="@lang('site.phone')">
                                             @error ('phone.'.$i)
