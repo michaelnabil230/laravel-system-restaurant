@@ -29,7 +29,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <img style="float: initial;max-height: 100px;" src="{{ setting('logo_path') }}" alt="Logo"
+        <img style="float: initial;max-height: 100px;border-radius: .25rem;" src="{{ setting('logo_path') }}" alt="Logo"
              class="brand-image"><br>
         <a href="#"><b>{{ setting('name') }}</b></a>
     </div>
@@ -70,7 +70,7 @@
                         <input type="checkbox" name="remember"> @lang('site.remember_me')
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block btn-flat"> @lang('site.login') </button>
+                <button type="submit" class="btn btn-primary btn-block"> @lang('site.login') </button>
             </form>
         </div>
         <!-- /.login-card-body -->
