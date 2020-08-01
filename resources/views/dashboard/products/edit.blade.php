@@ -30,7 +30,7 @@
                             <div class="card-header"><h3 class="card-title">@lang('site.edit')</h3></div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form action="{{ route('dashboard.products.update', $product->id) }}" method="post">
+                                <form action="{{ route('dashboard.products.update', $product->id) }}" enctype="multipart/form-data" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('put') }}
 

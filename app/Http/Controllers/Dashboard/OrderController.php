@@ -27,6 +27,7 @@ class OrderController extends Controller
         $orders = Order::when($request->search, function ($query) use ($request) {
             return $query->Where('id', $request->search);
         })->latest()->paginate();
+
         return view('dashboard.orders.index', compact('orders'));
 
     } //end of index
@@ -81,10 +82,17 @@ class OrderController extends Controller
         $finel_total_price = $sale > 0 ? $total_price - ($total_price * $sale / 100) : $total_price;
         $finel_total_price = ($finel_total_price * setting('value_added') / 100) + $finel_total_price;
 
-        $request_data = $request->except(['products']);
-        $request_data['total_price'] = $total_price;
-        $request_data['finel_total_price'] = $finel_total_price;
-        $request_data['user_id'] = Auth::id();
+        $request_data = [
+            'user_id' => Auth::id(),
+            'total_price' => $total_price,
+            'finel_total_price' => $finel_total_price,
+            'sale' => $sale,
+            'paid' => $request->paid,
+            'note' => $request->note,
+            'type_status' => $request->type_status,
+            'payment' => $request->payment,
+            'driver_id' => $request->driver_id,
+        ];
 
         $order = Order::create($request_data);
         $order->products()->attach($request->products);
@@ -115,19 +123,17 @@ class OrderController extends Controller
             'products' => 'required|array',
         ]);
         $order->delete();
-
         $this->CreateOrUpdate($request);
 
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.orders.index');
 
-    }//end of update order
+    } //end of update order
 
     public function offline(Request $request)
     {
         foreach ($request->orders as $order) {
             $request = json_decode($order, true);
-            $request['nota'] = null;
             $this->CreateOrUpdate((object) $request);
         }
 

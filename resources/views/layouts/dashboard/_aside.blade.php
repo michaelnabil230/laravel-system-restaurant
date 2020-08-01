@@ -20,60 +20,193 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == '') ? 'active' : '' }}"
+                <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.welcome') ? 'active' : ''  }}"
                                         href="{{ route('dashboard.welcome') }}"><i
                             class="fa fa-home"></i>
                         <p> @lang('site.dashboard')</p></a></li>
+                @php($user = Auth::user())
+                @if ($user->hasAnyPermission(['read_categories','create_categories']))
+                    <li
+                        class="nav-item has-treeview {{ Route::is('dashboard.categories.index') ||  Route::is('dashboard.categories.create')  ? 'menu-open' : ''  }}">
+                        <a href="#"
+                           class="nav-link {{ Route::is('dashboard.categories.index') ||  Route::is('dashboard.categories.create')  ? 'active' : ''  }}">
+                            <i class="nav-icon fa fa-list-alt"></i>
+                            <p>
+                                @lang('site.categories')
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('read_categories')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.categories.index') }}"
+                                       class="nav-link {{ Route::is('dashboard.categories.index') ? 'active' : ''  }}">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>@lang('site.categories')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('create_categories')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.categories.create') }}"
+                                       class="nav-link {{ Route::is('dashboard.categories.create') ? 'active' : ''  }}">
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>@lang('site.add')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
 
-                @can('read_categories')
-                    <li class="nav-item"><a
-                            class="nav-link {{ (request()->segment(3) == 'categories') ? 'active' : '' }}"
-                            href="{{ route('dashboard.categories.index') }}"><i
-                                class="fa fa-th"></i>
-                            <p> @lang('site.categories')</p></a></li>
-                @endcan
+                @if ($user->hasAnyPermission(['read_products','create_products']))
+                    <li
+                        class="nav-item has-treeview {{ Route::is('dashboard.products.index') ||  Route::is('dashboard.products.create')  ? 'menu-open' : ''  }}">
+                        <a href="#"
+                           class="nav-link {{ Route::is('dashboard.products.index') ||  Route::is('dashboard.products.create')  ? 'active' : ''  }}">
+                            <i class="nav-icon fa fa-th"></i>
+                            <p>
+                                @lang('site.products')
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('read_products')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.products.index') }}"
+                                       class="nav-link {{ Route::is('dashboard.products.index') ? 'active' : ''  }}">
+                                        <i class="fa fa-th nav-icon"></i>
+                                        <p>@lang('site.products')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('create_products')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.products.create') }}"
+                                       class="nav-link {{ Route::is('dashboard.products.create') ? 'active' : ''  }}">
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>@lang('site.add')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
+                @if ($user->hasAnyPermission(['read_orders','create_orders']))
+                    <li
+                        class="nav-item has-treeview {{ Route::is('dashboard.orders.index') ||  Route::is('dashboard.orders.create')  ? 'menu-open' : ''  }}">
+                        <a href="#"
+                           class="nav-link {{ Route::is('dashboard.orders.index') ||  Route::is('dashboard.orders.create')  ? 'active' : ''  }}">
+                            <i class="nav-icon fa fa-shopping-bag"></i>
+                            <p>
+                                @lang('site.orders')
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('read_orders')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.orders.index') }}"
+                                       class="nav-link {{ Route::is('dashboard.orders.index') ? 'active' : ''  }}">
+                                        <i class="fa fa-shopping-bag nav-icon"></i>
+                                        <p>@lang('site.orders')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('create_orders')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.orders.create') }}"
+                                       class="nav-link {{ Route::is('dashboard.orders.create') ? 'active' : ''  }}">
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>@lang('site.add')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
 
-                @can('read_products')
-                    <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == 'products') ? 'active' : '' }}"
-                                            href="{{ route('dashboard.products.index') }}"><i
-                                class="fa fa-th"></i>
-                            <p> @lang('site.products')</p></a></li>
-                @endcan
-
-                @can('read_orders')
-                    <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == 'orders') ? 'active' : '' }}"
-                                            href="{{ route('dashboard.orders.index') }}"><i
-                                class="fa fa-shopping-bag"></i>
-                            <p> @lang('site.orders')</p></a></li>
-                @endcan
-
-                @can('read_drivers')
-                    <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == 'drivers') ? 'active' : '' }}"
-                                            href="{{ route('dashboard.drivers.index') }}"><i
-                                class="fa fa-th"></i>
-                            <p> @lang('site.drivers')</p></a></li>
-                @endcan
-                @can('read_users')
-                    <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == 'users') ? 'active' : '' }}"
-                                            href="{{ route('dashboard.users.index') }}"><i
-                                class="fa fa-users"></i>
-                            <p> @lang('site.users')</p></a></li>
-                @endcan
+                @if ($user->hasAnyPermission(['read_drivers','create_drivers']))
+                    <li
+                        class="nav-item has-treeview {{ Route::is('dashboard.drivers.index') ||  Route::is('dashboard.drivers.create')  ? 'menu-open' : ''  }}">
+                        <a href="#"
+                           class="nav-link {{ Route::is('dashboard.drivers.index') ||  Route::is('dashboard.drivers.create')  ? 'active' : ''  }}">
+                            <i class="nav-icon fa fa-th"></i>
+                            <p>
+                                @lang('site.drivers')
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('read_drivers')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.drivers.index') }}"
+                                       class="nav-link {{ Route::is('dashboard.drivers.index') ? 'active' : ''  }}">
+                                        <i class="fa fa-th nav-icon"></i>
+                                        <p>@lang('site.drivers')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('create_drivers')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.drivers.create') }}"
+                                       class="nav-link {{ Route::is('dashboard.drivers.create') ? 'active' : ''  }}">
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>@lang('site.add')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
+                @if ($user->hasAnyPermission(['read_users','create_users']))
+                    <li
+                        class="nav-item has-treeview {{ Route::is('dashboard.users.index') ||  Route::is('dashboard.users.create')  ? 'menu-open' : ''  }}">
+                        <a href="#"
+                           class="nav-link {{ Route::is('dashboard.users.index') ||  Route::is('dashboard.users.create')  ? 'active' : ''  }}">
+                            <i class="nav-icon fa fa-users"></i>
+                            <p>
+                                @lang('site.users')
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('read_users')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.users.index') }}"
+                                       class="nav-link {{ Route::is('dashboard.users.index') ? 'active' : ''  }}">
+                                        <i class="fa fa-users nav-icon"></i>
+                                        <p>@lang('site.users')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('create_users')
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.users.create') }}"
+                                       class="nav-link {{ Route::is('dashboard.users.create') ? 'active' : ''  }}">
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>@lang('site.add')</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
 
                 @if (Auth::id() == 1)
-                    <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == 'reports') ? 'active' : '' }}"
+                    <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.reports.index') ? 'active' : ''  }}"
                                             href="{{ route('dashboard.reports.index') }}"><i
                                 class="fa fa-file"></i>
                             <p> @lang('site.reports')</p></a></li>
-                    <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == 'setting') ? 'active' : '' }}"
+                    <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.setting.index') ? 'active' : '' }}"
                                             href="{{ route('dashboard.setting.index') }}"><i
                                 class="fa fa-cogs"></i>
                             <p> @lang('site.setting')</p></a></li>
-                    <li class="nav-item"><a class="nav-link {{ (request()->segment(3) == 'backups') ? 'active' : '' }}"
+                    <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.backups.index') ? 'active' : '' }}"
                                             href="{{ route('dashboard.backups.index') }}"><i
                                 class="fa fa-database"></i>
                             <p> @lang('site.backups')</p></a></li>
-                @endcan
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

@@ -46,7 +46,8 @@ class CategoryController extends Controller
         ]);
         Category::create($request->all());
         session()->flash('success', __('site.added_successfully'));
-        return redirect()->route('dashboard.categories.index');
+        return back();
+
 
     }//end of store
 

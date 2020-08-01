@@ -32,7 +32,7 @@
                                 <p>@lang('site.categories')</p>
                             </div>
                             <div class="icon">
-                                <i class="fa fa-th"></i>
+                                <i class="fa fa-list-alt"></i>
                             </div>
                             <a href="{{ route('dashboard.categories.index') }}"
                                class="small-box-footer">@lang('site.read')

@@ -18,7 +18,7 @@ class ProductController extends Controller
         $this->middleware(['permission:update_products'])->only('edit');
         $this->middleware(['permission:delete_products'])->only('destroy');
 
-    }//end of constructor
+    } //end of constructor
 
     public function index(Request $request)
     {
@@ -62,7 +62,7 @@ class ProductController extends Controller
         } //end of if
         Product::create($request_data);
         session()->flash('success', __('site.added_successfully'));
-        return redirect()->route('dashboard.products.index');
+        return back();
 
     } //end of store
 

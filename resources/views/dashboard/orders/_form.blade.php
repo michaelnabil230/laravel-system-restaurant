@@ -45,9 +45,9 @@
                             @foreach ($categories as $index => $category)
                                 <li class="nav-item">
                                     <a class="nav-link {{ $index == 0 ? 'active' : '' }}"
-                                       id="{{ str_replace(' ', '-', $category->name) }}-tab"
-                                       aria-controls="{{ str_replace(' ', '-', $category->name) }}"
-                                       href="#{{ str_replace(' ', '-', $category->name) }}"
+                                       id="category-{{ $category->id }}-tab"
+                                       aria-controls="{{ $category->id }}"
+                                       href="#category-{{ $category->id }}"
                                        aria-selected="{{ $index == 0 ? 'true' : 'false' }}" role="tab"
                                        data-toggle="pill">
                                         {{ $category->name }}
@@ -60,8 +60,8 @@
                         <div class="tab-content" id="custom-tabs-one-tabContent">
                             @foreach ($categories as $index => $category)
                                 <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}"
-                                     id="{{ str_replace(' ', '-', $category->name) }}" role="tabpanel"
-                                     aria-labelledby="{{ str_replace(' ', '-', $category->name) }}-tab">
+                                     id="category-{{ $category->id }}" role="tabpanel"
+                                     aria-labelledby="category-{{ $category->id }}-tab">
                                     <div class="row">
                                         @foreach ($category->products as $product)
                                             <div class="col-6 col-sm-3 col-md-3 col-lg-3">
@@ -75,7 +75,7 @@
                                                             <span class="dec qtybtn">-</span>
                                                             <span data-id="{{ $product->id }}"
                                                                   data-name="{{ $product->name }}"
-                                                                  data-price="{{ number_format($product->price, 2) }}"
+                                                                  data-price="{{ $product->price }}"
                                                                   class="number">
                                                                 {{ $order ? array_key_exists($product->id,$quantity_products) ? $quantity_products[$product->id] : '0' : '0' }}
                                                             </span>
@@ -191,7 +191,7 @@
                                                 <label class="control-label"
                                                        for="type_status"> @lang('site.type_status')</label>
                                                 <select name="type_status" id="type_status"
-                                                        class="form-control {{ $errors->has('type_status') ? ' is-invalid' : '' }}">
+                                                        class="form-control type_status {{ $errors->has('type_status') ? ' is-invalid' : '' }}">
                                                     <option value="external" {{ $order ? $order->type_status == 'external' ? 'selected' : '' : 'selected'}}> @lang('site.external')</option>
                                                     <option value="internal" {{ $order ? $order->type_status == 'internal' ? 'selected' : '' : ''}}> @lang('site.internal')</option>
                                                 </select>
@@ -204,7 +204,7 @@
                                                 <label class="control-label"
                                                        for="payment"> @lang('site.type_payment')</label>
                                                 <select name="payment" id="payment"
-                                                        class="form-control {{ $errors->has('payment') ? ' is-invalid' : '' }}">
+                                                        class="form-control payment {{ $errors->has('payment') ? ' is-invalid' : '' }}">
                                                     <option value="cash" {{ $order ? $order->payment == 'cash' ? 'selected' : '' : 'selected'}}> @lang('site.cash')</option>
                                                     <option value="network" {{ $order ? $order->payment == 'network' ? 'selected' : '' : ''}}> @lang('site.network')</option>
                                                 </select>
@@ -216,7 +216,7 @@
                                                 <label class="control-label"
                                                        for="drivers"> @lang('site.drivers')</label>
                                                 <select name="driver_id" id="drivers"
-                                                        class="form-control {{ $errors->has('drivers') ? ' is-invalid' : '' }}">
+                                                        class="form-control driver_id {{ $errors->has('drivers') ? ' is-invalid' : '' }}">
                                                     @forelse ($drivers as $index => $driver)
                                                         <option {{ $order ? $order->driver_id == $driver->id ? 'selected' : '' : $index == 0 ? 'selected' : ''}}
                                                             value="{{ $driver->id }}">{{ $driver->name }}</option>
@@ -231,7 +231,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="control-label" for="note"> @lang('site.note')</label>
-                                                <textarea name="note" id="note" class="form-control">{{ $order ? $order->note : old('note')}}</textarea>
+                                                <textarea name="note" id="note" class="note form-control">{{ $order ? $order->note : old('note')}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -366,7 +366,7 @@
                 `<tr class="tr-product-${id}" data-product='${JSON.stringify(product)}'>
                     <td>${name}</td>
                     <td><input type="hidden" name="products[${id}][quantity]" value="${quantity}">${quantity}</td>
-                    <td class="product-price">${quantity * price}</td>
+                    <td class="product-price">${$.number((quantity * price) ,2)}</td>
                     <td><button class="btn btn-danger btn-sm remove-product-btn" data-id="${id}"><span class="fa fa-trash"></span></button></td>
                 </tr>`;
             $('.order-list').append(html);
@@ -441,8 +441,11 @@
                         }
                         total_price += product['price'];
                     });
+                    delete order['products'];
+                    FinelOrder = order;
                     FinelOrder['products'] = data_product;
 
+                    console.log('FinelOrder' ,FinelOrder);
                     OfflineOrders += `
                 <tr>
                     <td>${k + 1}</td>
@@ -494,7 +497,14 @@
                         products.push($(this).data('product'));
                     });
                     order['products'] = products;
+                    order['paid'] = Number($('.paid').val());
+                    order['sale'] = Number($('.sale').val());
+                    order['note'] = $('.note').val();
+                    order['type_status'] = $('.type_status').val();
+                    order['payment'] = $('.payment').val();
+                    order['driver_id'] = $('.driver_id').val();
 
+                    
                     orders.push(order);
                     localStorage.removeItem('orders');
 
