@@ -22,7 +22,7 @@
 
                 <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.welcome') ? 'active' : ''  }}"
                                         href="{{ route('dashboard.welcome') }}"><i
-                            class="fa fa-home"></i>
+                            class="nav-icon fa fa-home"></i>
                         <p> @lang('site.dashboard')</p></a></li>
                 @php($user = Auth::user())
                 @if ($user->hasAnyPermission(['read_categories','create_categories']))
@@ -196,15 +196,15 @@
                 @if (Auth::id() == 1)
                     <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.reports.index') ? 'active' : ''  }}"
                                             href="{{ route('dashboard.reports.index') }}"><i
-                                class="fa fa-file"></i>
+                                class="nav-icon fa fa-file"></i>
                             <p> @lang('site.reports')</p></a></li>
                     <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.setting.index') ? 'active' : '' }}"
                                             href="{{ route('dashboard.setting.index') }}"><i
-                                class="fa fa-cogs"></i>
+                                class="nav-icon fa fa-cogs"></i>
                             <p> @lang('site.setting')</p></a></li>
                     <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.backups.index') ? 'active' : '' }}"
                                             href="{{ route('dashboard.backups.index') }}"><i
-                                class="fa fa-database"></i>
+                                class="nav-icon fa fa-database"></i>
                             <p> @lang('site.backups')</p></a></li>
                 @endif
             </ul>

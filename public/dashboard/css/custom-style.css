@@ -52,11 +52,6 @@ ul {
     left: 10px;
 }
 
-.nav-sidebar .nav-link > i {
-    margin-right: .2rem;
-    margin-left: .2rem;
-}
-
 .nav-sidebar .nav-link > p > .right {
     left: 1rem;
     right: auto;
