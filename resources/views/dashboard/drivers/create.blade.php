@@ -39,7 +39,7 @@
                                                for="name"> @lang('site.name')</label>
                                         <input type="text" name="name"
                                                value="{{ old('name') }}"
-                                               class="form-control @error('name') is-invalid @enderr"
+                                               class="form-control @error('name') is-invalid @enderror"
                                                id="name"
                                                placeholder="@lang('site.name')">
                                         @error ('name')
@@ -50,11 +50,11 @@
                                         <div class="form-group">
                                             <label class="control-label"
                                                    for="phone"> @lang('site.phone')</label>
-                                            <input type="number" min="1" name="phone[]" value="{{ old('phone') }}"
-                                                   class="form-control @error('phone') is-invalid @enderr"
+                                            <input type="number" min="1" name="phone[]" value="{{ old('phone.'.$i) }}"
+                                                   class="form-control @error('phone') is-invalid @enderror"
                                                    id="phone"
                                                    placeholder="@lang('site.phone')">
-                                            @error ('phone')
+                                            @error('phone.'.$i)
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>

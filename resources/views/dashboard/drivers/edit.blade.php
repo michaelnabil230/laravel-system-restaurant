@@ -56,7 +56,7 @@
                                                    class="form-control @error('phone') is-invalid @enderror"
                                                    id="phone"
                                                    placeholder="@lang('site.phone')">
-                                            @error ('phone')
+                                            @error ('phone.'.$i)
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>

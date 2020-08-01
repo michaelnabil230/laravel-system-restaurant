@@ -89,9 +89,7 @@
                                                 $models = config('config_me.models');
                                                 $maps = config('config_me.maps')
                                             @endphp
-                                            <style>.card-header .nav-item .active {
-                                                    color: #495057 !important;
-                                                }</style>
+                                            <style>.card-header .nav-item .active {color: #495057 !important;}</style>
                                             <div class="card-header p-0 pt-1">
                                                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                                                     <li class="pt-2 px-3">
@@ -99,7 +97,7 @@
                                                     </li>
                                                     @foreach ($models as $index=>$model)
                                                         <li class="nav-item">
-                                                            <a class="nav-link {{ $index == 0 ? 'active @enderror"
+                                                            <a class="nav-link {{ $index == 0 ? 'active' : '' }} "
                                                                id="{{ $model }}-tab" data-toggle="pill"
                                                                href="#{{ $model }}" role="tab"
                                                                aria-controls="{{ $model }}"
@@ -112,7 +110,7 @@
                                                 <div class="tab-content" id="custom-tabs-two-tabContent">
                                                     @foreach ($models as $index=>$model)
                                                         <div
-                                                            class="tab-pane fade {{ $index == 0 ? 'show active @enderror "
+                                                            class="tab-pane fade {{ $index == 0 ? 'show active ' : '' }}"
                                                             id="{{ $model }}" role="tabpanel"
                                                             aria-labelledby="{{ $model }}-tab">
                                                             @foreach ($maps as $map)

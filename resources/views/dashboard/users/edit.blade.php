@@ -95,7 +95,7 @@
                                                     </li>
                                                     @foreach ($models as $index=>$model)
                                                         <li class="nav-item">
-                                                            <a class="nav-link {{ $index == 0 ? 'active @enderror"
+                                                            <a class="nav-link {{ $index == 0 ? 'active' : '' }}"
                                                                id="{{ $model }}-tab" data-toggle="pill"
                                                                href="#{{ $model }}" role="tab"
                                                                aria-controls="{{ $model }}"
@@ -108,7 +108,7 @@
                                                 <div class="tab-content" id="custom-tabs-two-tabContent">
                                                     @foreach ($models as $index=>$model)
                                                         <div
-                                                            class="tab-pane fade {{ $index == 0 ? 'show active @enderror "
+                                                            class="tab-pane fade {{ $index == 0 ? 'show active' : '' }} "
                                                             id="{{ $model }}" role="tabpanel"
                                                             aria-labelledby="{{ $model }}-tab">
                                                             @foreach ($maps as $map)
