@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Category;
-use App\Driver;
+use App\Models\Category;
+use App\Models\Driver;
 use App\Http\Controllers\Controller;
-use App\Order;
-use App\Product;
-use Auth;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,17 +18,17 @@ class OrderController extends Controller
         $this->middleware(['permission:create_orders'])->only('create');
         $this->middleware(['permission:update_orders'])->only('edit');
         $this->middleware(['permission:delete_orders'])->only('destroy');
-
     } //end of constructor
 
     public function index(Request $request)
     {
         $orders = Order::when($request->search, function ($query) use ($request) {
             return $query->Where('id', $request->search);
-        })->latest()->paginate();
+        })
+            ->latest()
+            ->paginate();
 
         return view('dashboard.orders.index', compact('orders'));
-
     } //end of index
 
     public function create()
@@ -49,11 +48,14 @@ class OrderController extends Controller
         $form_btn_order_icon = 'fa fa-plus';
 
         return view('dashboard.orders.create', compact(
-            'categories', 'order', 'url',
-            'method', 'form_btn_order_name', 'form_btn_order_icon',
+            'categories',
+            'order',
+            'url',
+            'method',
+            'form_btn_order_name',
+            'form_btn_order_icon',
             'drivers'
         ));
-
     } //end of create
 
     public function store(Request $request)
@@ -67,7 +69,6 @@ class OrderController extends Controller
 
         session()->flash('success', __('site.added_successfully'));
         return redirect()->route('dashboard.orders.index');
-
     } //end of store
 
     private function CreateOrUpdate($request)
@@ -83,7 +84,7 @@ class OrderController extends Controller
         $finel_total_price = ($finel_total_price * setting('value_added') / 100) + $finel_total_price;
 
         $request_data = [
-            'user_id' => Auth::id(),
+            'user_id' => auth()->id(),
             'total_price' => $total_price,
             'finel_total_price' => $finel_total_price,
             'sale' => $sale,
@@ -110,11 +111,15 @@ class OrderController extends Controller
 
         $drivers = Driver::get();
         return view('dashboard.orders.edit', compact(
-            'categories', 'order', 'quantity_products',
-            'url', 'method', 'form_btn_order_name',
-            'form_btn_order_icon', 'drivers'
+            'categories',
+            'order',
+            'quantity_products',
+            'url',
+            'method',
+            'form_btn_order_name',
+            'form_btn_order_icon',
+            'drivers'
         ));
-
     } //end of edit order
 
     public function update(Request $request, Order $order)
@@ -127,7 +132,6 @@ class OrderController extends Controller
 
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.orders.index');
-
     } //end of update order
 
     public function offline(Request $request)
@@ -146,32 +150,25 @@ class OrderController extends Controller
         $order->delete();
         session()->flash('success', __('site.deleted_successfully'));
         return redirect()->route('dashboard.orders.index');
-
     }
 
     public function products(Order $order)
     {
         $products = $order->products;
         return view('dashboard.orders._products', compact('order', 'products'));
-
     } //end of products
 
     public function update_status(Order $order)
     {
-        if ($order->status == __('site.order_status.the_receipt_of_the_request')) {
-            $status = 'the_order_has_been_confirmed';
-        } elseif ($order->status == __('site.order_status.the_order_has_been_confirmed')) {
-            $status = 'the_request_is_being_prepared';
-        } elseif ($order->status == __('site.order_status.the_request_is_being_prepared')) {
-            $status = 'order_is_in_progress';
-        } elseif ($order->status == __('site.order_status.order_is_in_progress')) {
-            $status = 'delivered';
+        $status = $order->status['index'];
+        if ($status != 4) {
+            $order->update([
+                'status' => $status++,
+            ]);
         }
-        $order->update([
-            'status' => $status,
-        ]);
         return response()->json([
-            'text' => __('site.order_status.' . $status),
+            'text' => $order->status['status'],
+            'index' => $order->status['index'],
             'success' => __('site.updated_successfully'),
         ]);
     }

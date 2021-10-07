@@ -3,7 +3,6 @@
 return [
     'dashboard' => 'الرئيسيه',
     'logout' => 'تسجيل الخروج',
-
     'add' => 'اضف',
     'create' => 'اضافه',
     'read' => 'عرض',
@@ -14,61 +13,46 @@ return [
     'show' => 'عرض',
     'loading' => 'جاري التحميل',
     'print' => 'طبع',
-
     'confirm_delete' => 'تاكيد الحذف',
     'yes' => 'نعم',
     'no' => 'لا',
-
     'login' => 'تسجيل الدخول',
     'remember_me' => 'تذكرني',
     'password' => 'كلمه المرور',
     'password_confirmation' => 'تاكيد كلمه المرور',
-
     'added_successfully' => 'تم اضافه البيانات بنجاح',
     'updated_successfully' => 'تم تعديل البيانات بنجاح',
     'deleted_successfully' => 'تم حذف البيانات بنجاح',
-
     'no_data_found' => 'للاسف لا يوجد اي سجلات',
     'no_records' => 'للاسف لا يوجد اي سجلات',
-
     'id' => 'Id',
     'orders' => 'الطلبات',
     'total_price' => 'السعر الكلي',
     'add_order' => 'اضف طلب',
     'edit_order' => 'تعديل طلب',
-
     'users' => 'المشرفين',
     'email' => 'البريد الاكتروني',
     'image' => 'صوره',
     'action' => 'اكشن',
-
     'permissions' => 'الصلاحيات',
-
     'name' => 'الاسم',
     'categories' => 'الاقسام',
     'position' => 'الترتيب',
     'all_categories' => 'كل الاقسام',
     'category' => 'القسم',
-
     'products_count' => 'عدد المنتجات',
     'related_products' => 'المنتجات المرتبطه',
-
     'show_products' => 'عرض المنتجات',
-
     'created_at' => 'تم اضافته',
-
-
     'products' => 'المنتجات',
     'product' => 'المنتج',
     'quantity' => 'الكميه',
     'total' => 'المجموع',
     'price' => 'السعر',
-
     'ar' => [
         'name' => 'الاسم بالغه العربيه',
         'description' => 'الوصف بالغه العربيه',
     ],
-
     'en' => [
         'name' => 'الاسم بالغه الانجليزيه',
         'description' => 'الوصف بالغه الانجليزيه',
@@ -126,11 +110,4 @@ return [
     'note' => 'ملحوظة',
     'user_name' => 'اسم المشرف',
     'driver_name' => 'اسم السائق',
-    '' => '',
-    '' => '',
-    '' => '',
-    '' => '',
-
-
-
 ];

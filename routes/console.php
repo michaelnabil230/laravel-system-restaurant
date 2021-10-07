@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Artisan;
 |
  */
 
+Artisan::command('project:init', function () {
+    Artisan::call('migrate:refresh');
+    Artisan::call('db:seed');
+    Artisan::call('storage:link');
+    Artisan::call('debugbar:clear');
+    Artisan::call('optimize:clear');
+})->describe('Running commands');
+
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');

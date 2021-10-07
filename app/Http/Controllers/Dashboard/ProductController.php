@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Category;
-use App\Http\Controllers\Controller;
-use App\Product;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Dashboard\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -17,7 +18,6 @@ class ProductController extends Controller
         $this->middleware(['permission:create_products'])->only('create');
         $this->middleware(['permission:update_products'])->only('edit');
         $this->middleware(['permission:delete_products'])->only('destroy');
-
     } //end of constructor
 
     public function index(Request $request)
@@ -26,36 +26,27 @@ class ProductController extends Controller
 
         $products = Product::when($request->search, function ($query) use ($request) {
 
-            return $query->Where('name_en', 'like', '%' . $request->search . '%')
-                ->orWhere('name_ar', 'like', '%' . $request->search . '%');
-
+            return $query->Where('name->ar', 'like', '%' . $request->search . '%')
+                ->orWhere('name->en', 'like', '%' . $request->search . '%');
         })->when($request->category_id, function ($q) use ($request) {
-
             return $q->where('category_id', $request->category_id);
-
-        })->with('category')->latest()->paginate();
+        })
+            ->with('category')
+            ->latest()
+            ->paginate();
 
         return view('dashboard.products.index', compact('categories', 'products'));
-
     } //end of index
 
     public function create()
     {
         $categories = Category::all();
         return view('dashboard.products.create', compact('categories'));
-
     } //end of create
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $request->validate([
-            'name_ar' => 'required|unique:products,name_ar',
-            'name_en' => 'required|unique:products,name_en',
-            'category_id' => 'required',
-            'price' => 'required',
-        ]);
-
-        $request_data = $request->all();
+        $request_data = $request->safe()->except(['image']);
 
         if ($request->image) {
             $request_data['image'] = $request->image->store('public/products');
@@ -63,26 +54,17 @@ class ProductController extends Controller
         Product::create($request_data);
         session()->flash('success', __('site.added_successfully'));
         return back();
-
     } //end of store
 
     public function edit(Product $product)
     {
         $categories = Category::all();
         return view('dashboard.products.edit', compact('categories', 'product'));
-
     } //end of edit
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
-            'name_ar' => 'required|unique:products,name_ar,' . $product->id,
-            'name_en' => 'required|unique:products,name_en,' . $product->id,
-            'category_id' => 'required',
-            'price' => 'required',
-        ]);
-
-        $request_data = $request->all();
+        $request_data = $request->safe()->except(['image']);
 
         if ($request->image) {
             if ($product->image != 'public/products/default.png') {
@@ -94,7 +76,6 @@ class ProductController extends Controller
         $product->update($request_data);
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.products.index');
-
     } //end of update
 
     public function destroy(Product $product)
@@ -106,7 +87,6 @@ class ProductController extends Controller
         $product->delete();
         session()->flash('success', __('site.deleted_successfully'));
         return redirect()->route('dashboard.products.index');
-
     } //end of destroy
 
 } //end of controller

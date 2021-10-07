@@ -13,18 +13,21 @@
                 <img src="{{ asset('default.png') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                <a href="{{ route('dashboard.profile.edit') }}" class="d-block">{{ auth()->user()->name }}</a>
             </div>
         </div>
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-                <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.welcome') ? 'active' : ''  }}"
-                                        href="{{ route('dashboard.welcome') }}"><i
-                            class="nav-icon fa fa-home"></i>
-                        <p> @lang('site.dashboard')</p></a></li>
-                @php($user = Auth::user())
+                <li>
+                    <select class="searchable-field form-control"></select>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('dashboard.welcome') ? 'active' : ''  }}" href="{{ route('dashboard.welcome') }}"><i class="nav-icon fa fa-home"></i>
+                        <p> @lang('site.dashboard')</p>
+                    </a>
+                </li>
+                @php($user = auth()->user())
                 @if ($user->hasAnyPermission(['read_categories','create_categories']))
                     <li
                         class="nav-item has-treeview {{ Route::is('dashboard.categories.index') ||  Route::is('dashboard.categories.create')  ? 'menu-open' : ''  }}">
@@ -193,23 +196,70 @@
                     </li>
                 @endif
 
-                @if (Auth::id() == 1)
-                    <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.reports.index') ? 'active' : ''  }}"
-                                            href="{{ route('dashboard.reports.index') }}"><i
-                                class="nav-icon fa fa-file"></i>
-                            <p> @lang('site.reports')</p></a></li>
-                    <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.setting.index') ? 'active' : '' }}"
-                                            href="{{ route('dashboard.setting.index') }}"><i
-                                class="nav-icon fa fa-cogs"></i>
-                            <p> @lang('site.setting')</p></a></li>
-                    <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.backups.index') ? 'active' : '' }}"
-                                            href="{{ route('dashboard.backups.index') }}"><i
-                                class="nav-icon fa fa-database"></i>
-                            <p> @lang('site.backups')</p></a></li>
-                @endif
+
+                @role('super_admin')
+                <li
+                    class="nav-item has-treeview {{ Route::is('dashboard.settings.index') ||  Route::is('dashboard.settings.create')  ? 'menu-open' : ''  }}">
+                    <a href="#"
+                       class="nav-link {{ Route::is('dashboard.settings.index') ||  Route::is('dashboard.settings.create')  ? 'active' : ''  }}">
+                        <i class="nav-icon fa fa fa-cogs"></i>
+                        <p>
+                            @lang('site.settings')
+                            <i class="right fa fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard.settings.index') }}"
+                               class="nav-link {{ Route::is('dashboard.settings.index') ? 'active' : ''  }}">
+                                <i class="fa fa fa-cogs nav-icon"></i>
+                                <p>@lang('site.settings')</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard.settings.create') }}"
+                               class="nav-link {{ Route::is('dashboard.settings.create') ? 'active' : ''  }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>@lang('site.add')</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('dashboard.setting.audit-logs.index') ? 'active' : '' }}"
+                       href="{{ route('dashboard.setting.audit-logs.index') }}"><i
+                            class="nav-icon fa fa-database"></i>
+                        <p> @lang('site.audit_logs')</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('dashboard.setting.backups.index') ? 'active' : '' }}"
+                       href="{{ route('dashboard.setting.backups.index') }}"><i
+                            class="nav-icon fa fa-database"></i>
+                        <p> @lang('site.backups')</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('dashboard.setting.reports.index') ? 'active' : ''  }}"
+                       href="{{ route('dashboard.setting.reports.index') }}"><i
+                            class="nav-icon fa fa-file"></i>
+                        <p> @lang('site.reports')</p>
+                    </a>
+                </li>
+                @endrole
+
+                @php($unread = \App\Models\QaTopic::unreadCount())
+                <li class="nav-item">
+                    <a href="{{ route("dashboard.messenger.index") }}"
+                       class="{{ Route::is('dashboard.messenger.*') ? 'active' : '' }} nav-link">
+                        <i class="fa-fw fa fa-envelope nav-icon"></i>
+                        <p>@lang('site.messages')</p>
+                        @if($unread > 0)
+                            <strong>({{ $unread }})</strong>
+                        @endif
+                    </a>
+                </li>
             </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
+        </nav><!-- /.sidebar-menu -->
+    </div><!-- /.sidebar -->
 </aside>

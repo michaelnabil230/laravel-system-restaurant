@@ -56,13 +56,13 @@
                                         <div class="form-group">
                                             <label class="control-label"
                                                    for="name_{{ $locale }}"> @lang('site.' . $locale . '.name')</label>
-                                            <input type="text" name="name_{{ $locale }}"
-                                                   value="{{ old('name_'.$locale) }}"
-                                                   class="form-control @error('name_'.$locale) is-invalid @enderror"
+                                            <input type="text" name="name[{{ $locale }}]"
+                                                   value="{{ old('name.'.$locale) }}"
+                                                   class="form-control @error ('name.'.$locale) is-invalid @enderror"
                                                    id="name_{{ $locale }}"
                                                    placeholder="@lang('site.'.$locale . '.name')">
-                                            @error ('name_'.$locale)
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @error ('name.'.$locale)
+                                                <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     @endforeach
@@ -71,7 +71,6 @@
                                         <input type="number" step="0.01" name="price" value="{{ old('price') }}"
                                                class="form-control @error('price') is-invalid @enderror"
                                                id="price" placeholder="@lang('site.price')" step="0.01" min="1">
-
                                         @error ('price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

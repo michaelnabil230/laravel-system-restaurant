@@ -15,12 +15,8 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name_ar');
-            $table->string('name_en');
-
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-
+            $table->longText('name');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('image')->default('public/products/default.png');
             $table->double('price', 8, 2);
             $table->timestamps();

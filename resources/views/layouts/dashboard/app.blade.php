@@ -200,6 +200,76 @@
             });
             n.show();
         });//end of delete
+        
+        $('.searchable-field').select2({
+            minimumInputLength: 3,
+            ajax: {
+                url: '{{ route("dashboard.globalSearch") }}',
+                dataType: 'json',
+                type: 'GET',
+                delay: 200,
+                data: function (term) {
+                    return {
+                        search: term
+                    };
+                },
+                results: function (data) {
+                    return {
+                        data
+                    };
+                }
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            templateResult: formatItem,
+            templateSelection: formatItemSelection,
+            placeholder: "@lang('site.search') ...",
+            language: {
+                inputTooShort: function (args) {
+                    var remainingChars = args.minimum - args.input.length;
+                    var translation = "@lang('site.search_input_too_short')";
+
+                    return translation.replace(':count', remainingChars);
+                },
+                errorLoading: function () {
+                    return "@lang('site.results_could_not_be_loaded')";
+                },
+                searching: function () {
+                    return "@lang('site.searching')";
+                },
+                noResults: function () {
+                    return "@lang('site.no_results')";
+                },
+            }
+
+        });
+
+        function formatItem(item) {
+            if (item.loading) {
+                return "@lang('site.searching')...";
+            }
+            var markup = "<div class='searchable-link' href='" + item.url + "'>";
+            markup += "<div class='searchable-title'>" + item.model + "</div>";
+            $.each(item.fields, function (key, field) {
+                markup += "<div class='searchable-fields'>" + item.fields_formated[field] + " : " + item[field] + "</div>";
+            });
+            markup += "</div>";
+
+            return markup;
+        }
+
+        function formatItemSelection(item) {
+            if (!item.model) {
+                return "@lang('site.search')...";
+            }
+            return item.model;
+        }
+
+        $(document).delegate('.searchable-link', 'click', function () {
+            var url = $(this).attr('href');
+            window.location = url;
+        });
     });//end of ready
 
 </script>

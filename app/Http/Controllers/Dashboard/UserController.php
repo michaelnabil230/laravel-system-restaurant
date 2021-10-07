@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use App\Order;
-use App\User;
-use DB;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\UserRequest;
 
 class UserController extends Controller
 {
@@ -17,19 +19,17 @@ class UserController extends Controller
         $this->middleware(['permission:create_users'])->only('create');
         $this->middleware(['permission:update_users'])->only('edit');
         $this->middleware(['permission:delete_users'])->only('destroy');
-
     } //end of constructor
 
     public function index(Request $request)
     {
         $users = User::role('admin')->when($request->search, function ($query) use ($request) {
-
             return $query->where('name', 'like', '%' . $request->search . '%');
-
-        })->latest()->paginate();
+        })
+            ->latest()
+            ->paginate();
 
         return view('dashboard.users.index', compact('users'));
-
     } //end of index
     public function show(User $user)
     {
@@ -65,10 +65,12 @@ class UserController extends Controller
 
         return view('dashboard.users.show', compact(
             'user',
-            'Sales2YearsLabelsMonths', 'Sales2YearsThisYear', 'Sales2YearsLastYear',
-            'sales30DayesDataInMonth', 'sales30DayesLabelsInMonth'
+            'Sales2YearsLabelsMonths',
+            'Sales2YearsThisYear',
+            'Sales2YearsLastYear',
+            'sales30DayesDataInMonth',
+            'sales30DayesLabelsInMonth'
         ));
-
     } //end of show user
     public function day(User $user, Request $request)
     {
@@ -81,7 +83,7 @@ class UserController extends Controller
         )->groupBy('time')->get();
         $dataDay = [];
         foreach ($sales as $i => $sale) {
-            $time = \Carbon\Carbon::createFromFormat('H:i:s', $sale->time)->format('g:i:s A');
+            $time = Carbon::createFromFormat('H:i:s', $sale->time)->format('g:i:s A');
             $dataDay[$time] = $sale->total_price;
         }
         $Sales30DayesDataDay = array_values($dataDay);
@@ -120,19 +122,11 @@ class UserController extends Controller
     public function create()
     {
         return view('dashboard.users.create');
-
     } //end of create
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'permissions' => 'required|min:1',
-        ]);
-
-        $request_data = $request->except(['password', 'password_confirmation', 'permissions']);
+        $request_data = $request->safe()->except(['password', 'password_confirmation', 'permissions']);
         $request_data['password'] = bcrypt($request->password);
 
         $user = User::create($request_data);
@@ -141,25 +135,16 @@ class UserController extends Controller
 
         session()->flash('success', __('site.added_successfully'));
         return redirect()->route('dashboard.users.index');
-
     } //end of store
 
     public function edit(User $user)
     {
         return view('dashboard.users.edit', compact('user'));
-
     } //end of user
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'confirm_password' => 'required_with:password|same:password',
-            'permissions' => 'required|min:1',
-        ]);
-        $request_data = $request->except(['password', 'password_confirmation', 'permissions']);
+        $request_data = $request->safe()->except(['password', 'password_confirmation', 'permissions']);
 
         if ($request->password) {
             $request_data['password'] = bcrypt($request->password);
@@ -169,7 +154,6 @@ class UserController extends Controller
 
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.users.index');
-
     } //end of update
 
     public function destroy(User $user)
@@ -177,7 +161,6 @@ class UserController extends Controller
         $user->delete();
         session()->flash('success', __('site.deleted_successfully'));
         return redirect()->route('dashboard.users.index');
-
     } //end of destroy
 
 } //end of controller

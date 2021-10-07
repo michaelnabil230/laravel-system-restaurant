@@ -15,9 +15,8 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('logo')->default('public/logo/default.png');
-            $table->double('value_added', 8, 2);
+            $table->string('key');
+            $table->longText('value');
         });
     }
 

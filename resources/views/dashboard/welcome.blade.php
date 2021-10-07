@@ -78,7 +78,7 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>{{ $users_count }}</h3>
+                                <h3>{{ $admins_count }}</h3>
                                 <p>@lang('site.users')</p>
                             </div>
                             <div class="icon">
@@ -221,30 +221,15 @@
     <!-- ChartJS -->
     <script src="{{ asset('dashboard/plugins/chart.js/Chart.min.js') }}"></script>
     <script>
-
         var text_sales_30_dayes_card_header = "@lang('site.sales_30_dayes')";
         var text_sales_2_years_card_header = "@lang('site.sales_2_years')";
-
-        new Chart($('#products_most'), {
-            type: 'doughnut',
-            data: {
-                labels: {!! $labels !!},
-                datasets: [
-                    {
-                        data: {!! $data_count !!},
-                        backgroundColor: {!! $colors !!}
-                    },
-                ]
-            },
-        })
         var ticksStyle = {
             fontColor: '#495057',
             fontStyle: 'bold'
         }
-        var Sales2YearsThisYear = {!! $Sales2YearsThisYear !!};
-        var Sales2YearsLastYear = {!! $Sales2YearsLastYear !!};
-        var Sales2YearsLabels = {!! $Sales2YearsLabelsMonths !!};
-
+        var Sales2YearsThisYear = {!! $Chart['Sales2YearsThisYear'] !!};
+        var Sales2YearsLastYear = {!! $Chart['Sales2YearsLastYear'] !!};
+        var Sales2YearsLabels = {!! $Chart['Sales2YearsLabelsMonths'] !!};
         var Sales2Years = new Chart($('#sales-2-years'), {
             type: 'bar',
             data: {
@@ -279,15 +264,15 @@
                                     value /= 1000
                                     value += 'k'
                                 }
-                                return 'LE ' + value
+                                return 'SAR ' + value
                             }
                         }, ticksStyle)
                     }],
                 }
             }
         })
-        var Sales30DayesDataInMonth = {!! $sales30DayesDataInMonth !!};
-        var Sales30DayesLabels = {!! $sales30DayesLabelsInMonth !!};
+        var Sales30DayesDataInMonth = {!! $Chart['sales30DayesDataInMonth'] !!};
+        var Sales30DayesLabels = {!! $Chart['sales30DayesLabelsInMonth'] !!};
         var ChartSales30Dayes = new Chart($('#sales-30-dayes'), {
             type: 'line',
             data: {
@@ -331,8 +316,7 @@
                                     value /= 1000
                                     value += 'k'
                                 }
-
-                                return 'LE ' + value
+                                return 'SAR ' + value
                             }
                         }, ticksStyle)
                     }],
@@ -346,7 +330,6 @@
         $('body').on('click', '.btn-sales-30-dayes', function (e) {
             $(this).addClass('d-none');
             $('.sales-30-dayes-card-header').text(text_sales_30_dayes_card_header);
-
             UpdateChartSales30Dayes(ChartSales30Dayes, Sales30DayesDataInMonth, Sales30DayesLabels, function (s, ss) {
                 ChartSales30DayesRequestAjex(Sales30DayesLabels[ss[0]._index]);
             })
@@ -358,7 +341,6 @@
                 ChartSales2YearsRequestAjex((ss[0]._index + 1));
             })
         });
-
         function ChartSales2YearsRequestAjex(month) {
             $.get("{{ route('dashboard.month') }}?month=" + month, function (data) {
                 $('.sales-2-years-card-header').text(data['text']);
@@ -366,16 +348,13 @@
                 UpdateChartSales2Years(Sales2Years, data['Sales2YearsYearInMonth'], data['Sales2YearsLastYearInMonth'], data['Sales2YearsLabels'], null)
             });
         }
-
         function ChartSales30DayesRequestAjex(day) {
             $.get("{{ route('dashboard.day') }}?day=" + day, function (data) {
                 $('.sales-30-dayes-card-header').text(data['text']);
                 $('.btn-sales-30-dayes').removeClass('d-none');
-
                 UpdateChartSales30Dayes(ChartSales30Dayes, data['Sales30DayesDataDay'], data['Sales30DayesLabelsDay'], null)
             });
         }
-
         function UpdateChartSales2Years(chart, data0, data1, labels, onClick) {
             chart.data.labels = labels;
             chart.data.datasets[0].data = data0;
@@ -383,7 +362,6 @@
             chart.options.onClick = onClick,
                 chart.update();
         }
-
         function UpdateChartSales30Dayes(chart, data, labels, onClick) {
             chart.data.labels = labels;
             chart.data.datasets[0].data = data;

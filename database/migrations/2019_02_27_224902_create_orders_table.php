@@ -19,18 +19,12 @@ class CreateOrdersTable extends Migration
             $table->double('finel_total_price', 8, 2);
             $table->double('sale', 8, 2);
             $table->double('paid', 8, 2);
-            
-            $table->string('status')->default('the_receipt_of_the_request');
+            $table->integer('status')->default(0);
             $table->longText('note')->nullable();
             $table->string('type_status')->default('internal');
             $table->string('payment')->default('cash');
-
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');;
-    
-            $table->unsignedBigInteger('driver_id')->nullable();
-            $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('set null');;
-        
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('driver_id')->nullable()->constrained('drivers')->onDelete('set null');
             $table->timestamps();
         });
     }

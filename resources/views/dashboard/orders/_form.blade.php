@@ -176,7 +176,7 @@
                                                            for="value_added"> @lang('site.value_added')</label>
                                                     <div class="input-group mb-3">
                                                         <input disabled="disabled"
-                                                               value="{{ number_format(setting('value_added'), 2) }}"
+                                                               value="{{ number_format(setting('value_added',15), 2) }}"
                                                                class="form-control input-sm"
                                                                id="value_added">
                                                         <div class="input-group-append">
@@ -254,10 +254,16 @@
                                                        for="drivers"> @lang('site.drivers')</label>
                                                 <select name="driver_id" id="drivers"
                                                         class="form-control driver_id {{ $errors->has('drivers') ? ' is-invalid' : '' }}">
+                                                    @php($select = '')
                                                     @forelse ($drivers as $index => $driver)
-                                                        <option
-                                                            {{ $order ? $order->driver_id == $driver->id ? 'selected' : '' : $index == 0 ? 'selected' : ''}}
-                                                            value="{{ $driver->id }}">{{ $driver->name }}</option>
+                                                    @if ($order)
+                                                        @if ($order->driver_id == $driver->id)
+                                                            @php($select = 'selected')
+                                                        @endif
+                                                    @else
+                                                        @php($select = 'selected')
+                                                    @endif
+                                                        <option {{ $select }} value="{{ $driver->id }}">{{ $driver->name }}</option>
                                                     @empty
                                                         <option value="" disabled="disabled"
                                                                 selected>@lang('site.no_data_found')</option>

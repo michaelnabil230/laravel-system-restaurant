@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Category;
-use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -15,67 +16,51 @@ class CategoryController extends Controller
         $this->middleware(['permission:create_categories'])->only('create');
         $this->middleware(['permission:update_categories'])->only('edit');
         $this->middleware(['permission:delete_categories'])->only('destroy');
+    } //end of constructor
 
-    }//end of constructor
-    
     public function index(Request $request)
     {
         $categories = Category::when($request->search, function ($query) use ($request) {
 
-            return $query->Where('name_en', 'like', '%' . $request->search . '%')
-                ->orWhere('name_ar', 'like', '%' . $request->search . '%');
-
-        })->withCount('products')->latest()->paginate();
+            return $query->where('name->en', 'like', '%' . $request->search . '%')
+                ->orWhere('name->ar', 'like', '%' . $request->search . '%');
+        })
+            ->withCount('products')
+            ->latest()
+            ->paginate();
 
         return view('dashboard.categories.index', compact('categories'));
-
-    }//end of index
+    } //end of index
 
     public function create()
     {
         return view('dashboard.categories.create');
+    } //end of create
 
-    }//end of create
-
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate([
-            'name_ar' => 'required|unique:categories,name_ar',
-            'name_en' => 'required|unique:categories,name_en',
-            'position' => 'nullable|integer|min:-2147483648|max:2147483647',
-        ]);
-        Category::create($request->all());
+        Category::create($request->validated());
         session()->flash('success', __('site.added_successfully'));
         return back();
-
-
-    }//end of store
+    } //end of store
 
     public function edit(Category $category)
     {
         return view('dashboard.categories.edit', compact('category'));
+    } //end of edit
 
-    }//end of edit
-
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        $request->validate([
-            'name_ar' => 'required|unique:categories,name_ar,' . $category->id,
-            'name_en' => 'required|unique:categories,name_en,' . $category->id,
-            'position' => 'nullable|integer|min:-2147483648|max:2147483647',
-        ]);
-        $category->update($request->all());
+        $category->update($request->validated());
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.categories.index');
-
-    }//end of update
+    } //end of update
 
     public function destroy(Category $category)
     {
         $category->delete();
         session()->flash('success', __('site.deleted_successfully'));
         return redirect()->route('dashboard.categories.index');
-
-    }//end of destroy
+    } //end of destroy
 
 }//end of controller

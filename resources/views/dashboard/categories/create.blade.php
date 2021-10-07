@@ -38,12 +38,12 @@
                                         <div class="form-group">
                                             <label class="control-label"
                                                    for="name_{{ $locale }}"> @lang('site.' . $locale . '.name')</label>
-                                            <input type="text" name="name_{{ $locale }}"
-                                                   value="{{ old('name_'.$locale) }}"
-                                                   class="form-control @error ('name_'.$locale) is-invalid @enderror"
+                                            <input type="text" name="name[{{ $locale }}]"
+                                                   value="{{ old('name.'.$locale) }}"
+                                                   class="form-control @error ('name.'.$locale) is-invalid @enderror"
                                                    id="name_{{ $locale }}"
                                                    placeholder="@lang('site.'.$locale . '.name')">
-                                            @error ('name_'.$locale)
+                                            @error ('name.'.$locale)
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>

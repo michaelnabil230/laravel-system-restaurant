@@ -1,7 +1,10 @@
 <?php
 if (!function_exists('setting')) {
-    function setting($data)
+    function setting($key, $default = '')
     {
-        return \App\Setting::first()->$data;
+        $setting = collect(cache()->get('setting'))->where('key', $key);
+
+        $setting = $setting->first();
+        return $setting ? $setting['value'] : $default;
     }
 }
