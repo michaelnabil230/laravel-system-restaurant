@@ -1,2 +1,2 @@
-## composer install
-## php artisan project:init
+composer install
+php artisan project:init
