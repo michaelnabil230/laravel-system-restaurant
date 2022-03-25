@@ -39,13 +39,11 @@
                                 <form action="{{ route('dashboard.admins.store') }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('post') }}
-
                                     <div class="form-group">
                                         <label class="control-label" for="name"> @lang('dashboard.name')</label>
                                         <input type="text" name="name" value="{{ old('name') }}"
                                             class="form-control @error('name') is-invalid @enderror" id="name"
                                             placeholder="@lang('dashboard.name')">
-
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -55,7 +53,6 @@
                                         <input type="text" name="email" value="{{ old('email') }}"
                                             class="form-control @error('email') is-invalid @enderror" id="email"
                                             placeholder="@lang('dashboard.email')">
-
                                         @error('email')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -65,7 +62,6 @@
                                         <input type="password" name="password" value="{{ old('password') }}"
                                             class="form-control @error('password') is-invalid @enderror" id="password"
                                             placeholder="@lang('dashboard.password')">
-
                                         @error('password')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -78,7 +74,6 @@
                                             class="form-control @error('password_confirmation') is-invalid @enderror"
                                             id="password_confirmation"
                                             placeholder="@lang('dashboard.password_confirmation')">
-
                                         @error('password_confirmation')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -127,14 +122,14 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i> @lang('dashboard.add')</button>
+                                            <i class="fa fa-plus"></i> 
+                                            @lang('dashboard.add')
+                                        </button>
                                     </div>
-
                                 </form>
                             </div>
                         </div>

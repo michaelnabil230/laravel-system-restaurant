@@ -9,14 +9,14 @@ class AuditLogsController extends Controller
 {
     public function index()
     {
-        $auditLogs = AuditLog::with('user:id,name')->latest()->paginate();
+        $auditLogs = AuditLog::with('admin:id,name')->latest()->paginate();
 
         return view('dashboard.setting.auditLogs.index', compact('auditLogs'));
     }
 
     public function show(AuditLog $auditLog)
     {
-        $auditLog->load('user:id,name');
+        $auditLog->load('admin:id,name');
 
         return view('dashboard.setting.auditLogs.show', compact('auditLog'));
     }

@@ -53,7 +53,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($backups as  $backup)
+                                            @forelse ($backups as $backup)
                                                 <tr>
                                                     <td>{{ $loop->index + 1 }}</td>
                                                     <td>{{ $backup['name'] }}</td>
@@ -61,12 +61,13 @@
                                                     <td>{{ $backup['time'] }}</td>
                                                     <td class="py-0 align-middle">
                                                         <div class="btn-group btn-group-sm">
-                                                            <a href="?file={{ $backup['name'] }}"
-                                                                class="btn btn-primary"><i class="fa fa-download"></i>
+                                                            <a href="?file={{ $backup['name'] }}" class="btn btn-primary">
+                                                                <i class="fa fa-download"></i>
                                                                 @lang('dashboard.download')
                                                             </a>
-                                                            <a href="#" class="btn delete btn-danger"><i
-                                                                    class="fa fa-trash"></i> @lang('dashboard.delete')
+                                                            <a href="#" class="btn delete btn-danger">
+                                                                <i class="fa fa-trash"></i>
+                                                                @lang('dashboard.delete')
                                                             </a>
                                                             <form
                                                                 action="{{ route('dashboard.setting.backups.delete', ['file' => $backup['name']]) }}"
@@ -78,14 +79,15 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="15" class="text-center">@lang('dashboard.no_data_found')
+                                                    <td colspan="15" class="text-center">
+                                                        @lang('dashboard.no_data_found')
                                                     </td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
                                 </div>
-                            </div><!-- /.card-body -->
+                            </div>
                         </div>
                     </div>
                 </div>

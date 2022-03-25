@@ -34,13 +34,11 @@
                             <div class="card-header">
                                 <h3 class="card-title">@lang('dashboard.edit')</h3>
                             </div>
-
                             <div class="card-body">
                                 <form action="{{ route('dashboard.products.update', $product->id) }}"
                                     enctype="multipart/form-data" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('put') }}
-
                                     <div class="form-group">
                                         <label class="control-label" for="categories">
                                             @lang('dashboard.categories')</label>
@@ -59,12 +57,11 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                     @foreach (LaravelLocalization::getSupportedLocales() as $locale)
                                         <div class="form-group">
-                                            <label class="control-label" for="name_{{ $locale }}"> @lang('dashboard.'
-                                                .
-                                                $locale . '.name')</label>
+                                            <label class="control-label" for="name_{{ $locale }}">
+                                                @lang('dashboard.'.$locale . '.name')
+                                            </label>
                                             <input type="text" name="name[{{ $locale }}]"
                                                 value="{{ $product->getTranslation('name', $locale) }}"
                                                 class="form-control @error('name.' . $locale) is-invalid @enderror"

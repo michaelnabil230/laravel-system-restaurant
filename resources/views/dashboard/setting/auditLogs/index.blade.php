@@ -41,7 +41,7 @@
                                                 <th>@lang('dashboard.description')</th>
                                                 <th>@lang('dashboard.subject_id')</th>
                                                 <th>@lang('dashboard.subject_type')</th>
-                                                <th>@lang('dashboard.user_name')</th>
+                                                <th>@lang('dashboard.admin_name')</th>
                                                 <th>@lang('dashboard.host')</th>
                                                 <th>@lang('dashboard.created_at')</th>
                                                 <th>@lang('dashboard.action')</th>
@@ -54,13 +54,14 @@
                                                     <td>{{ $auditLog->description }}</td>
                                                     <td>{{ $auditLog->subject_id }}</td>
                                                     <td>{{ $auditLog->subject_type }}</td>
-                                                    <td>{{ $auditLog->user->name ?? '' }}</td>
+                                                    <td>{{ $auditLog->admin?->name ?? '' }}</td>
                                                     <td>{{ $auditLog->host }}</td>
                                                     <td>{{ $auditLog->created_at }}</td>
                                                     <td class="py-0 align-middle">
                                                         <div class="btn-group btn-group-sm">
                                                             <a href="{{ route('dashboard.setting.audit-logs.show', $auditLog->id) }}"
-                                                                class="btn btn-info"><i class="fa fa-eye"></i>
+                                                                class="btn btn-info">
+                                                                <i class="fa fa-eye"></i>
                                                                 @lang('dashboard.show')
                                                             </a>
                                                         </div>
@@ -68,7 +69,8 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="15" class="text-center">@lang('dashboard.no_data_found')
+                                                    <td colspan="15" class="text-center">
+                                                        @lang('dashboard.no_data_found')
                                                     </td>
                                                 </tr>
                                             @endforelse
@@ -76,7 +78,7 @@
                                     </table>
                                     {{ $auditLogs->links() }}
                                 </div>
-                            </div><!-- /.card-body -->
+                            </div>
                         </div>
                     </div>
                 </div>

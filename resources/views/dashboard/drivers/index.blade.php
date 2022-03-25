@@ -90,7 +90,6 @@
                                                             @endcan
                                                         </div>
                                                     </td>
-
                                                 </tr>
                                             @empty
                                                 <tr>
@@ -104,7 +103,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -34,12 +34,13 @@
                                         <input type="text" name="search" class="form-control float-right"
                                             value="{{ request()->search }}" placeholder="@lang('dashboard.search')">
                                         <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i>
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fa fa-search"></i>
                                                 @lang('dashboard.search')
                                             </button>
                                             @can('create_admins')
-                                                <a href="{{ route('dashboard.admins.create') }}" class="btn btn-primary"><i
-                                                        class="fa fa-plus"></i>
+                                                <a href="{{ route('dashboard.admins.create') }}" class="btn btn-primary">
+                                                    <i class="fa fa-plus"></i>
                                                     @lang('dashboard.add')
                                                 </a>
                                             @endcan
@@ -47,10 +48,8 @@
                                     </div>
                                 </form>
                             </div>
-
                             <div class="card-body">
                                 <div class="table-responsive">
-
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -70,8 +69,9 @@
                                                         <div class="btn-group btn-group-sm">
                                                             @can('update_admins')
                                                                 <a href="{{ route('dashboard.admins.show', $admin->id) }}"
-                                                                    class="btn btn-md btn-warning"><i
-                                                                        class="fa fa-eye"></i> @lang('dashboard.show')
+                                                                    class="btn btn-md btn-warning">
+                                                                    <i class="fa fa-eye"></i>
+                                                                    @lang('dashboard.show')
                                                                 </a>
                                                             @endcan
                                                             @can('update_admins')
@@ -105,7 +105,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

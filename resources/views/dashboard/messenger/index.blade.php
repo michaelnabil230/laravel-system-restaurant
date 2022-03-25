@@ -76,7 +76,7 @@
                             </table>
                             {{ $topics->links() }}
                         </div>
-                    </div><!-- /.card-body -->
+                    </div>
                 </div>
             </div>
         </div>

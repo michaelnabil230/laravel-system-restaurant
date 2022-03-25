@@ -18,10 +18,8 @@
         </div>
         <section class="content">
             <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>{{ $categories_count }}</h3>
@@ -36,9 +34,7 @@
                             </a>
                         </div>
                     </div>
-                    <!-- ./col -->
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3>{{ $products_count }}</h3>
@@ -53,9 +49,7 @@
                             </a>
                         </div>
                     </div>
-                    <!-- ./col -->
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
                                 <h3>{{ $orders_count }}</h3>
@@ -70,9 +64,7 @@
                             </a>
                         </div>
                     </div>
-                    <!-- ./col -->
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
                                 <h3>{{ $admins_count }}</h3>
@@ -87,7 +79,6 @@
                             </a>
                         </div>
                     </div>
-                    <!-- ./col -->
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
@@ -187,7 +178,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div><!-- /.card-body -->
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -207,8 +198,8 @@
                             <div class="card-body">
                                 <div class="chart-responsive">
                                     <canvas id="products_most" height="150"></canvas>
-                                </div><!-- ./chart-responsive -->
-                            </div><!-- /.card-body -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,10 +217,10 @@
             fontColor: '#495057',
             fontStyle: 'bold'
         }
-        var Sales2YearsThisYear = {!! $Chart['Sales2YearsThisYear'] !!};
-        var Sales2YearsLastYear = {!! $Chart['Sales2YearsLastYear'] !!};
-        var Sales2YearsLabels = {!! $Chart['Sales2YearsLabelsMonths'] !!};
-        var Sales2Years = new Chart($('#sales-2-years'), {
+        var sales2YearsThisYear = {!! $chart['sales2YearsThisYear'] !!};
+        var sales2YearsLastYear = {!! $chart['sales2YearsLastYear'] !!};
+        var sales2YearsLabels = {!! $chart['sales2YearsLabelsMonths'] !!};
+        var sales2Years = new Chart($('#sales-2-years'), {
             type: 'bar',
             data: {
                 labels: Sales2YearsLabels,
@@ -269,14 +260,14 @@
                 }
             }
         })
-        var Sales30DayesDataInMonth = {!! $Chart['sales30DayesDataInMonth'] !!};
-        var Sales30DayesLabels = {!! $Chart['sales30DayesLabelsInMonth'] !!};
-        var ChartSales30Dayes = new Chart($('#sales-30-dayes'), {
+        var sales30DayesDataInMonth = {!! $chart['sales30DayesDataInMonth'] !!};
+        var sales30DayesLabels = {!! $chart['sales30DayesLabelsInMonth'] !!};
+        var chartSales30Dayes = new Chart($('#sales-30-dayes'), {
             type: 'line',
             data: {
-                labels: Sales30DayesLabels,
+                labels: sales30DayesLabels,
                 datasets: [{
-                    data: Sales30DayesDataInMonth,
+                    data: sales30DayesDataInMonth,
                     backgroundColor: 'transparent',
                     borderColor: '#007bff',
                     pointBorderColor: '#007bff',
@@ -287,7 +278,7 @@
             },
             options: {
                 onClick: function(s, ss) {
-                    ChartSales30DayesRequestAjex(Sales30DayesLabels[ss[0]._index])
+                    chartSales30DayesRequestAjex(sales30DayesLabels[ss[0]._index])
                 },
                 maintainAspectRatio: false,
                 tooltips: {
@@ -326,51 +317,51 @@
         $('body').on('click', '.btn-sales-30-dayes', function(e) {
             $(this).addClass('d-none');
             $('.sales-30-dayes-card-header').text(text_sales_30_dayes_card_header);
-            UpdateChartSales30Dayes(ChartSales30Dayes, Sales30DayesDataInMonth, Sales30DayesLabels, function(s,
+            updateChartSales30Dayes(chartSales30Dayes, sales30DayesDataInMonth, sales30DayesLabels, function(s,
                 ss) {
-                ChartSales30DayesRequestAjex(Sales30DayesLabels[ss[0]._index]);
+                chartSales30DayesRequestAjex(sales30DayesLabels[ss[0]._index]);
             })
         });
         $('body').on('click', '.btn-sales-2-years', function(e) {
             $(this).addClass('d-none');
             $('.sales-2-years-card-header').text(text_sales_2_years_card_header);
-            UpdateChartSales2Years(Sales2Years, Sales2YearsThisYear, Sales2YearsLastYear, Sales2YearsLabels,
+            updateChartSales2Years(sales2Years, sales2YearsThisYear, sales2YearsLastYear, sales2YearsLabels,
                 function(s, ss) {
-                    ChartSales2YearsRequestAjex((ss[0]._index + 1));
+                    chartSales2YearsRequestAjex((ss[0]._index + 1));
                 })
         });
 
-        function ChartSales2YearsRequestAjex(month) {
+        function chartSales2YearsRequestAjex(month) {
             $.get("{{ route('dashboard.month') }}?month=" + month, function(data) {
                 $('.sales-2-years-card-header').text(data['text']);
                 $('.btn-sales-2-years').removeClass('d-none');
-                UpdateChartSales2Years(Sales2Years, data['Sales2YearsYearInMonth'], data[
-                    'Sales2YearsLastYearInMonth'], data['Sales2YearsLabels'], null)
+                updateChartSales2Years(sales2Years, data['sales2YearsYearInMonth'], data[
+                    'sales2YearsLastYearInMonth'], data['sales2YearsLabels'], null)
             });
         }
 
-        function ChartSales30DayesRequestAjex(day) {
+        function chartSales30DayesRequestAjex(day) {
             $.get("{{ route('dashboard.day') }}?day=" + day, function(data) {
                 $('.sales-30-dayes-card-header').text(data['text']);
                 $('.btn-sales-30-dayes').removeClass('d-none');
-                UpdateChartSales30Dayes(ChartSales30Dayes, data['Sales30DayesDataDay'], data[
-                    'Sales30DayesLabelsDay'], null)
+                updateChartSales30Dayes(chartSales30Dayes, data['sales30DayesDataDay'], data[
+                    'sales30DayesLabelsDay'], null)
             });
         }
 
-        function UpdateChartSales2Years(chart, data0, data1, labels, onClick) {
+        function updateChartSales2Years(chart, data0, data1, labels, onClick) {
             chart.data.labels = labels;
             chart.data.datasets[0].data = data0;
             chart.data.datasets[1].data = data1;
-            chart.options.onClick = onClick,
-                chart.update();
+            chart.options.onClick = onClick;
+            chart.update();
         }
 
-        function UpdateChartSales30Dayes(chart, data, labels, onClick) {
+        function updateChartSales30Dayes(chart, data, labels, onClick) {
             chart.data.labels = labels;
             chart.data.datasets[0].data = data;
-            chart.options.onClick = onClick,
-                chart.update();
+            chart.options.onClick = onClick;
+            chart.update();
         }
     </script>
 @endpush

@@ -44,7 +44,7 @@
 
     </style>
     <div class="text-center">
-        <img style="width: 130px;border-radius: .25rem;" src="{{ setting('logo_path') }}">
+        <img style="width: 130px;border-radius: .25rem;" src="{{ Storage::url(setting('logo')) }}">
     </div>
     <br>
     <div class="text-center">

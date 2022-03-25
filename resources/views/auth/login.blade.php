@@ -37,7 +37,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <img style="float: initial;max-height: 100px;border-radius: .25rem;" src="{{ setting('logo_path') }}"
+            <img style="float: initial;max-height: 100px;border-radius: .25rem;" src="{{ Storage::url(setting('logo')) }}"
                 alt="Logo" class="brand-image"><br>
             <a href="#"><b>{{ setting('name') }}</b></a>
         </div>

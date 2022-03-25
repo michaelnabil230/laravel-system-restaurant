@@ -55,13 +55,13 @@
             <tr>
                 <td>{{ $order->id }}</td>
                 <td>{{ $order->created_at }}</td>
-                <td>{{ number_format($order->total_price, 2) }} SAR</td>
+                <td>{{ number_format($order->total_price, 2) }} L.E</td>
             </tr>
         @endforeach
         <tr class="label-primary">
             <td>@lang('dashboard.orders_total')</td>
             <td>&nbsp;</td>
-            <td>{{ number_format($orders_total, 2) }} SAR</td>
+            <td>{{ number_format($orders_total, 2) }} L.E</td>
         </tr>
     </tbody>
 </table>

@@ -2,7 +2,7 @@
     @php($user = auth()->user())
 
     <a href="{{ route('dashboard.welcome') }}" class="brand-link">
-        <img src="{{ setting('logo_path') }}" alt="Logo" class="brand-image"
+        <img src="{{ Storage::url(setting('logo')) }}" alt="Logo" class="brand-image"
             style="border-radius: .25rem;opacity: .8">
         <span class="brand-text font-weight-light">{{ setting('name') }}</span>
     </a>

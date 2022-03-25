@@ -72,10 +72,10 @@
                                         </tr>
                                         <tr>
                                             <th>
-                                                @lang('dashboard.user_name')
+                                                @lang('dashboard.admin_name')
                                             </th>
                                             <td>
-                                                {{ $auditLog->user->name }}
+                                                {{ $auditLog->admin?->name ?? '' }}
                                             </td>
                                         </tr>
                                         <tr>

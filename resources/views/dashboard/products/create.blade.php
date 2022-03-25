@@ -34,13 +34,11 @@
                             <div class="card-header">
                                 <h3 class="card-title">@lang('dashboard.add')</h3>
                             </div>
-
                             <div class="card-body">
                                 <form action="{{ route('dashboard.products.store') }}" enctype="multipart/form-data"
                                     method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('post') }}
-
                                     <div class="form-group">
                                         <label class="control-label" for="categories">
                                             @lang('dashboard.categories')</label>
@@ -54,7 +52,6 @@
                                                     {{ $category->name }}</option>
                                             @endforeach
                                         </select>
-
                                         @error('category_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -62,9 +59,9 @@
 
                                     @foreach (LaravelLocalization::getSupportedLocales() as $locale)
                                         <div class="form-group">
-                                            <label class="control-label" for="name_{{ $locale }}"> @lang('dashboard.'
-                                                .
-                                                $locale . '.name')</label>
+                                            <label class="control-label" for="name_{{ $locale }}">
+                                                @lang('dashboard.'.$locale . '.name')
+                                            </label>
                                             <input type="text" name="name[{{ $locale }}]"
                                                 value="{{ old('name.' . $locale) }}"
                                                 class="form-control @error('name.' . $locale) is-invalid @enderror"
@@ -84,7 +81,6 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                     <div class="form-group">
                                         <label class="control-label" for="image">@lang('dashboard.image')</label>
                                         <div class="custom-file">
@@ -97,12 +93,12 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i> @lang('dashboard.add')</button>
+                                            <i class="fa fa-plus"></i>
+                                            @lang('dashboard.add')
+                                        </button>
                                     </div>
-
                                 </form>
                             </div>
                         </div>

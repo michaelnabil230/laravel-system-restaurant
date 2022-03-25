@@ -40,10 +40,8 @@
                             <div class="card-header">
                                 <h3 class="card-title">@lang('dashboard.edit')</h3>
                             </div>
-
                             <div class="card-body">
                                 <form action="{{ route('dashboard.admins.update', $admin->id) }}" method="post">
-
                                     {{ csrf_field() }}
                                     {{ method_field('put') }}
                                     <div class="form-group">

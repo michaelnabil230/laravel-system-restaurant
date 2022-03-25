@@ -10,7 +10,8 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-left">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('dashboard.welcome') }}"><i class="fa fa-home"></i>
+                                <a href="{{ route('dashboard.welcome') }}">
+                                    <i class="fa fa-home"></i>
                                     @lang('dashboard.dashboard')
                                 </a>
                             </li>
@@ -97,7 +98,8 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="15" class="text-center">@lang('dashboard.no_data_found')
+                                                    <td colspan="15" class="text-center">
+                                                        @lang('dashboard.no_data_found')
                                                     </td>
                                                 </tr>
                                             @endforelse

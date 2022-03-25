@@ -67,13 +67,10 @@
                                             @lang('dashboard.edit')
                                         </button>
                                     </div>
-
                                 </form>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </section>

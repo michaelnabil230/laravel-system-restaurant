@@ -38,7 +38,8 @@
                                             @foreach ($categories as $product)
                                                 <option value="{{ $product->id }}"
                                                     {{ request()->product_id == $product->id ? 'selected' : '' }}>
-                                                    {{ $product->name }}</option>
+                                                    {{ $product->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         <div class="input-group-append">
@@ -46,8 +47,8 @@
                                                 @lang('dashboard.search')
                                             </button>
                                             @can('create_products')
-                                                <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary"><i
-                                                        class="fa fa-plus"></i>
+                                                <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary">
+                                                    <i class="fa fa-plus"></i>
                                                     @lang('dashboard.add')
                                                 </a>
                                             @endcan
@@ -76,8 +77,10 @@
                                                     <td>{{ $loop->index + 1 }}</td>
                                                     <td>{{ $product->name }}</td>
                                                     <td>{{ $product->category->name }}</td>
-                                                    <td><img src="{{ $product->image_path }}" style="width: 100px"
-                                                            class="img-thumbnail"></td>
+                                                    <td>
+                                                        <img src="{{ $product->image_path }}" style="width: 100px"
+                                                            class="img-thumbnail">
+                                                    </td>
                                                     <td>{{ $product->price }}</td>
                                                     <td class="py-0 align-middle">
                                                         <div class="btn-group btn-group-sm">
@@ -103,7 +106,8 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="15" class="text-center">@lang('dashboard.no_data_found')
+                                                    <td colspan="15" class="text-center">
+                                                        @lang('dashboard.no_data_found')
                                                     </td>
                                                 </tr>
                                             @endforelse
