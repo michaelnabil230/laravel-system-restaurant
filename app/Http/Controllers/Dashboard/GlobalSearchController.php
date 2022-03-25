@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use App\Models\{
-    User,
     Category,
     Driver,
     Order,
     Product,
+    User,
 };
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class GlobalSearchController extends Controller
 {
@@ -27,7 +27,7 @@ class GlobalSearchController extends Controller
     {
         $search = $request->input('search');
 
-        abort_if($search === null || !isset($search['term']), 400);
+        abort_if($search === null || ! isset($search['term']), 400);
 
         $term = $search['term'];
         $searchableData = [];

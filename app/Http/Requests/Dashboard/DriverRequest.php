@@ -32,15 +32,15 @@ class DriverRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'phone' => [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ],
             'phone.0' => [
-                'required'
+                'required',
             ],
         ];
     }
@@ -51,15 +51,15 @@ class DriverRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'phone' => [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ],
             'phone.0' => [
-                'required'
+                'required',
             ],
         ];
     }

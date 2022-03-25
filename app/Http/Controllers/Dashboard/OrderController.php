@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Driver;
-use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -68,6 +68,7 @@ class OrderController extends Controller
         $this->createOrUpdate($request);
 
         session()->flash('success', __('dashboard.added_successfully'));
+
         return to_route('dashboard.orders.index');
     }
 
@@ -131,6 +132,7 @@ class OrderController extends Controller
         $this->createOrUpdate($request);
 
         session()->flash('success', __('dashboard.updated_successfully'));
+
         return to_route('dashboard.orders.index');
     }
 
@@ -142,6 +144,7 @@ class OrderController extends Controller
         }
 
         session()->flash('success', __('dashboard.added_successfully'));
+
         return to_route('dashboard.orders.index');
     }
 
@@ -149,12 +152,14 @@ class OrderController extends Controller
     {
         $order->delete();
         session()->flash('success', __('dashboard.deleted_successfully'));
+
         return to_route('dashboard.orders.index');
     }
 
     public function products(Order $order)
     {
         $products = $order->products;
+
         return view('dashboard.orders._products', compact('order', 'products'));
     }
 

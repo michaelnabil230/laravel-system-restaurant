@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Order;
-use App\Models\Category;
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
@@ -22,7 +20,7 @@ class Product extends Model
      * @var array
      */
     public static $searchable = [
-        'name'
+        'name',
     ];
 
     /**

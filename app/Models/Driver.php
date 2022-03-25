@@ -16,7 +16,7 @@ class Driver extends Model
      */
     public static $searchable = [
         'name',
-        'phone'
+        'phone',
     ];
 
     /**
@@ -27,7 +27,7 @@ class Driver extends Model
     protected $fillable = [
         'name',
         'phone',
-        'note'
+        'note',
     ];
 
     /**

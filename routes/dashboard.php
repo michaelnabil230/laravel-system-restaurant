@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\DriverController;
-use App\Http\Controllers\Dashboard\WelcomeController;
 use App\Http\Controllers\Dashboard\GlobalSearchController;
+use App\Http\Controllers\Dashboard\Setting\AuditLogsController;
 use App\Http\Controllers\Dashboard\Setting\ReportController;
 use App\Http\Controllers\Dashboard\Setting\SettingController;
-use App\Http\Controllers\Dashboard\Setting\AuditLogsController;
+use App\Http\Controllers\Dashboard\WelcomeController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class,'index'])->name('welcome');
 Route::get('/day', [WelcomeController::class,'day'])->name('day');

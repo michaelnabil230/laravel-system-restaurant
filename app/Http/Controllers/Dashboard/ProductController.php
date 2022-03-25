@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Dashboard\ProductRequest;
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -42,6 +42,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
+
         return view('dashboard.products.create', compact('categories'));
     }
 
@@ -55,12 +56,14 @@ class ProductController extends Controller
 
         Product::create($validated);
         session()->flash('success', __('dashboard.added_successfully'));
+
         return back();
     }
 
     public function edit(Product $product)
     {
         $categories = Category::all();
+
         return view('dashboard.products.edit', compact('categories', 'product'));
     }
 
@@ -77,6 +80,7 @@ class ProductController extends Controller
 
         $product->update($validated);
         session()->flash('success', __('dashboard.updated_successfully'));
+
         return to_route('dashboard.products.index');
     }
 
@@ -88,6 +92,7 @@ class ProductController extends Controller
 
         $product->delete();
         session()->flash('success', __('dashboard.deleted_successfully'));
+
         return to_route('dashboard.products.index');
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-use App\Traits\Auditable;
 use App\Observers\CategoryObserver;
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
 {
@@ -19,11 +18,11 @@ class Category extends Model
      * @var array
      */
     public static $searchable = [
-        'name'
+        'name',
     ];
 
     public $translatable = [
-        'name'
+        'name',
     ];
 
     /**
@@ -33,7 +32,7 @@ class Category extends Model
      */
     protected $fillable = [
         'name', 
-        'position'
+        'position',
     ];
 
     /**

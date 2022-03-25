@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\QaTopicCreateRequest;
 use App\Http\Requests\Dashboard\QaTopicReplyRequest;
-use App\Models\User;
 use App\Models\QaTopic;
+use App\Models\User;
 
 class MessengerController extends Controller
 {
@@ -55,6 +55,7 @@ class MessengerController extends Controller
                 }
             }
         }
+
         return [
             'inbox' => $inboxUnreadCount,
             'outbox' => $outboxUnreadCount,
@@ -104,7 +105,8 @@ class MessengerController extends Controller
     private function checkAccessRights(QaTopic $topic)
     {
         $user = auth()->user();
-        return abort_if(!in_array($user->id, [$topic->creator_id, $topic->receiver_id]), 401);
+
+        return abort_if(! in_array($user->id, [$topic->creator_id, $topic->receiver_id]), 401);
     }
 
     public function destroyTopic(QaTopic $topic)

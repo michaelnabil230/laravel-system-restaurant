@@ -22,7 +22,7 @@ class ReportController
         $orders = $orders->orderBy('total_price', 'desc')->get();
         $data = [
             'orders' => $orders,
-            'orders_total' => $orders_total
+            'orders_total' => $orders_total,
         ];
 
         return view('dashboard.reports.orders', $data);

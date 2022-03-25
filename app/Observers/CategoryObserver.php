@@ -16,6 +16,7 @@ class CategoryObserver
     {
         if (is_null($category->position)) {
             $category->position = Category::max('position') + 1;
+
             return;
         }
 
@@ -46,11 +47,11 @@ class CategoryObserver
 
         if ($category->getOriginal('position') > $category->position) {
             $positionRange = [
-                $category->position, $category->getOriginal('position')
+                $category->position, $category->getOriginal('position'),
             ];
         } else {
             $positionRange = [
-                $category->getOriginal('position'), $category->position
+                $category->getOriginal('position'), $category->position,
             ];
         }
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Driver;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\DriverRequest;
+use App\Models\Driver;
+use Illuminate\Http\Request;
 
 class DriverController extends Controller
 {
@@ -43,6 +43,7 @@ class DriverController extends Controller
         $validated['phone'] = array_filter($request->phone);
         Driver::create($validated);
         session()->flash('success', __('dashboard.added_successfully'));
+
         return to_route('dashboard.drivers.index');
     }
 
@@ -58,6 +59,7 @@ class DriverController extends Controller
 
         $driver->update($validated);
         session()->flash('success', __('dashboard.updated_successfully'));
+
         return to_route('dashboard.drivers.index');
     }
 
@@ -65,6 +67,7 @@ class DriverController extends Controller
     {
         $driver->delete();
         session()->flash('success', __('dashboard.deleted_successfully'));
+
         return to_route('dashboard.drivers.index');
     }
 }

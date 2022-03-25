@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Dashboard;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ProductRequest extends FormRequest
@@ -33,14 +33,14 @@ class ProductRequest extends FormRequest
         $rules = [
             'category_id' => [
                 'required',
-                'exists:categories,id'
+                'exists:categories,id',
             ],
             'image' => [
                 'required',
-                'image'
+                'image',
             ],
             'price' => [
-                'required'
+                'required',
             ],
         ];
 
@@ -48,7 +48,7 @@ class ProductRequest extends FormRequest
             $rules += [
                 'name.' . $locale => [
                     'required',
-                    Rule::unique('products', 'name->' . $locale)
+                    Rule::unique('products', 'name->' . $locale),
                 ],
             ];
         }
@@ -61,21 +61,21 @@ class ProductRequest extends FormRequest
         $rules = [
             'category_id' => [
                 'required',
-                'exists:categories,id'
+                'exists:categories,id',
             ],
             'image' => [
                 'required',
-                'image'
+                'image',
             ],
             'price' => [
-                'required'
+                'required',
             ],
         ];
         foreach (LaravelLocalization::getSupportedLocales() as $locale) {
             $rules += [
                 'name.' . $locale => [
                     'required',
-                    Rule::unique('products', 'name->' . $locale)->ignore($this->product->id, 'product_id')
+                    Rule::unique('products', 'name->' . $locale)->ignore($this->product->id, 'product_id'),
                 ],
             ];
         }

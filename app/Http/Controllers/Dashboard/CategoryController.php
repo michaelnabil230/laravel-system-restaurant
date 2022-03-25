@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\CategoryRequest;
+use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -41,6 +41,7 @@ class CategoryController extends Controller
     {
         Category::create($request->validated());
         session()->flash('success', __('dashboard.added_successfully'));
+
         return back();
     }
 
@@ -53,6 +54,7 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
         session()->flash('success', __('dashboard.updated_successfully'));
+
         return to_route('dashboard.categories.index');
     }
 
@@ -60,6 +62,7 @@ class CategoryController extends Controller
     {
         $category->delete();
         session()->flash('success', __('dashboard.deleted_successfully'));
+
         return to_route('dashboard.categories.index');
     }
 }

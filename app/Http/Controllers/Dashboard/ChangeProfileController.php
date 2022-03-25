@@ -13,6 +13,7 @@ class ChangeProfileController extends Controller
         auth()->user()->update($request->validated());
 
         session()->flash('success', __('dashboard.updated_successfully'));
+
         return to_route('dashboard.profile.edit');
     }
 
@@ -20,6 +21,7 @@ class ChangeProfileController extends Controller
     {
         auth()->user()->update($request->validated());
         session()->flash('success', __('dashboard.updated_successfully'));
+
         return to_route('dashboard.profile.edit');
     }
 
@@ -31,6 +33,7 @@ class ChangeProfileController extends Controller
         ]);
         $user->delete();
         session()->flash('success', __('dashboard.deleted_successfully'));
+
         return to_route('admin.login');
     }
 }

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use DateTime;
-use DatePeriod;
-use DateInterval;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Models\{
-    User,
+    Category,
     Order,
     Product,
-    Category,
+    User,
 };
+use Carbon\Carbon;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class WelcomeController extends Controller
 {
@@ -86,6 +86,7 @@ class WelcomeController extends Controller
         }
         $Sales30DayesDataDay = array_values($dataDay);
         $Sales30DayesLabelsDay = array_keys($dataDay);
+
         return response()->json([
             'Sales30DayesDataDay' => $Sales30DayesDataDay,
             'Sales30DayesLabelsDay' => $Sales30DayesLabelsDay,

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use Carbon\Carbon;
-use App\Models\User as Admin;
-use App\Models\Order;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AdminRequest;
+use App\Models\Order;
+use App\Models\User as Admin;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -147,6 +147,7 @@ class AdminController extends Controller
         $admin->syncPermissions($request->permissions);
 
         session()->flash('success', __('dashboard.added_successfully'));
+
         return to_route('dashboard.admins.index');
     }
 
@@ -163,6 +164,7 @@ class AdminController extends Controller
         $admin->syncPermissions($request->permissions);
 
         session()->flash('success', __('dashboard.updated_successfully'));
+
         return to_route('dashboard.admins.index');
     }
 
@@ -170,6 +172,7 @@ class AdminController extends Controller
     {
         $admin->delete();
         session()->flash('success', __('dashboard.deleted_successfully'));
+
         return to_route('dashboard.admins.index');
     }
 }

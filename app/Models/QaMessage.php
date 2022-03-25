@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\QaTopic;
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class QaMessage extends Model
 {

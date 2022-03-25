@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Driver;
-use App\Models\Product;
 use App\Traits\Auditable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -23,7 +20,7 @@ class Order extends Model
      */
     public static $searchable = [
         'id',
-        'status'
+        'status',
     ];
 
     /**
@@ -41,7 +38,7 @@ class Order extends Model
         'type_status',
         'payment',
         'admin_id',
-        'driver_id'
+        'driver_id',
     ];
 
     const OrderStatus = [
@@ -49,7 +46,7 @@ class Order extends Model
         'the_order_has_been_confirmed',
         'the_request_is_being_prepared',
         'order_is_in_progress',
-        'finished'
+        'finished',
     ];
 
     const TypePayment = [
@@ -68,6 +65,7 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot('quantity');
     }
+
     /**
      * Get the admin that owns the Order
      *

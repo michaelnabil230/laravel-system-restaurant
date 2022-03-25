@@ -14,7 +14,7 @@ class SettingSeeder extends Seeder
     public function run()
     {
         setting([
-            'name' => 'SYETEM'
+            'name' => 'SYETEM',
         ])
             ->save();
     }
