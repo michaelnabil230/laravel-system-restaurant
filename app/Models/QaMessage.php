@@ -15,7 +15,7 @@ class QaMessage extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'topic_id',
@@ -33,7 +33,7 @@ class QaMessage extends Model
      *
      * @return BelongsTo
      */
-    public function topic()
+    public function topic(): BelongsTo
     {
         return $this->belongsTo(QaTopic::class);
     }
@@ -43,7 +43,7 @@ class QaMessage extends Model
      *
      * @return HasOne
      */
-    public function sender()
+    public function sender(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'sender_id')->withTrashed();
     }

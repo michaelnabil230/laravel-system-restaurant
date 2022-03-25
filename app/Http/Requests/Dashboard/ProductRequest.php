@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Dashboard;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ProductRequest extends FormRequest
 {
@@ -43,14 +44,14 @@ class ProductRequest extends FormRequest
             ],
         ];
 
-        foreach (config('config_me.locales') as $locale) {
+        foreach (LaravelLocalization::getSupportedLocales() as $locale) {
             $rules += [
                 'name.' . $locale => [
                     'required',
                     Rule::unique('products', 'name->' . $locale)
                 ],
             ];
-        } //end of for each
+        }
 
         return $rules;
     }
@@ -70,14 +71,14 @@ class ProductRequest extends FormRequest
                 'required'
             ],
         ];
-        foreach (config('config_me.locales') as $locale) {
+        foreach (LaravelLocalization::getSupportedLocales() as $locale) {
             $rules += [
                 'name.' . $locale => [
                     'required',
                     Rule::unique('products', 'name->' . $locale)->ignore($this->product->id, 'product_id')
                 ],
             ];
-        } //end of for each
+        }
 
         return $rules;
     }

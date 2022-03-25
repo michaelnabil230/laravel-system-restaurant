@@ -2,35 +2,45 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\Driver;
+use App\Models\Product;
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
     use Auditable;
+
     /**
      * The attributes that are mass searchable.
      *
      * @var array
      */
     public static $searchable = [
-        'id', 'status'
+        'id',
+        'status'
     ];
+
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
-        'total_price', 
-        'finel_total_price',
-        'status', 
+        'total_price',
+        'final_total_price',
+        'status',
         'note',
-        'sale', 
+        'sale',
         'paid',
-        'type_status', 
+        'type_status',
         'payment',
-        'user_id', 
+        'admin_id',
         'driver_id'
     ];
 
@@ -41,84 +51,124 @@ class Order extends Model
         'order_is_in_progress',
         'finished'
     ];
+
     const TypePayment = [
-        'cash', 'mada',
-        'master_card', 'visa',
+        'cash',
+        'mada',
+        'master_card',
+        'visa',
     ];
+
     /**
      * The products that belong to the Order
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function products()
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)->withPivot('quantity');
     }
     /**
-     * Get the user that owns the Order
+     * Get the admin that owns the Order
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function user()
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id', 'admin_id');
     }
 
     /**
      * Get the driver that owns the Order
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function driver()
+    public function driver(): BelongsTo
     {
         return $this->belongsTo(Driver::class);
     }
 
-    public function getTypePaymentAttribute($value)
+    /**
+     * Get or Set the order's typePayment.
+     *
+     * @return Attribute
+     */
+    protected function typePayment(): Attribute
     {
-        $name = $this::TypePayment[(int)$value];
-        return [
-            'index' => (int)$value,
-            'type_payment' => __('site.type_payments.' . $name),
-            'logo_brand' => asset('type_payments/' . $name . '-logo.svg'),
-        ];
-    } //end of get type_payment attribute
+        return new Attribute(
+            get: fn ($value) => [
+                'index' => (int) $value,
+                'type_payment' => __('tenant.type_payments.' . $this::TypePayment[(int) $value]),
+            ],
+        );
+    }
 
-    public function getStatusAttribute($value)
+    /**
+     * Get or Set the order's status.
+     *
+     * @return Attribute
+     */
+    protected function status(): Attribute
     {
-        return [
-            'index' => (int)$value,
-            'status' => __('site.order_status.' . $this::OrderStatus[(int)$value]),
-        ];
-    } //end of get status attribute
+        return new Attribute(
+            get: fn ($value) => [
+                'index' => (int) $value,
+                'status' => __('tenant.order_status.' . $this::OrderStatus[(int) $value]),
+            ],
+        );
+    }
 
-    public function scopeByYearAndMonth($query, $year, $month)
+    /**
+     * Scope a query to only by year and Month.
+     *
+     * @param Builder $query
+     * @param mixed $year
+     * @param mixed $month
+     * @return Builder
+     */
+    public function scopeByYearAndMonth(Builder $query, $year, $month)
     {
-        return $query->selectRaw('DATE_FORMAT(created_at, "%m-%d") AS md,SUM(total_price) AS total_price')
+        return $query
+            ->selectRaw('DATE_FORMAT(created_at, "%m-%d") AS md,SUM(total_price) AS total_price')
             ->whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
             ->get()
             ->keyBy('md')
             ->toArray();
-    } //end of scope ByYearAndOrMonth
+    }
 
-    public function scopeByYear($query, $year)
+    /**
+     * Scope a query to only by year.
+     *
+     * @param Builder $query
+     * @param mixed $year
+     * @return Builder
+     */
+    public function scopeByYear(Builder $query, $year)
     {
-        return $query->selectRaw('MONTH(created_at) AS month,SUM(total_price) AS total')
+        return $query
+            ->selectRaw('MONTH(created_at) AS month,SUM(total_price) AS total')
             ->whereYear('created_at', $year)
             ->groupBy('month')
             ->get()
             ->pluck('total', 'month')
             ->toArray();
-    } //end of scope ByYear
+    }
 
-    public function scopeSales30($query)
+    /**
+     * Scope a query to only by sales 30.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeSales30(Builder $query)
     {
-        return $query->selectRaw('DATE_FORMAT(created_at, "%m-%d") AS md,SUM(total_price) AS total_amount')
+        return $query
+            ->selectRaw('DATE_FORMAT(created_at, "%m-%d") AS md,SUM(total_price) AS total_amount')
             ->whereRaw('created_at >=  DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), "%Y-%m-%d 00:00")')
             ->groupBy('md')
             ->get()
             ->keyBy('md')
             ->toArray();
-    } //end of scope Sales30
-} //end of model
+    }
+}

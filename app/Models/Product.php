@@ -6,14 +6,16 @@ use App\Models\Order;
 use App\Models\Category;
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
     use HasTranslations, Auditable;
 
     public $translatable = ['name'];
+
     /**
      * The attributes that are mass searchable.
      *
@@ -22,34 +24,24 @@ class Product extends Model
     public static $searchable = [
         'name'
     ];
+
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     public $fillable = [
-        'name', 
-        'price', 
-        'category_id', 
-        'image'
+        'name',
+        'price',
+        'category_id',
     ];
-    /**
-     * The attributes that should be append to native types.
-     *
-     * @var array
-     */
-    protected $appends = ['image_path'];
 
-    public function getImagePathAttribute()
-    {
-        return Storage::url($this->image);
-    }//end of image path attribute
     /**
      * Get the category that owns the Product
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -57,10 +49,10 @@ class Product extends Model
     /**
      * The orders that belong to the Product
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function orders()
+    public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class);
     }
-}//end of model
+}

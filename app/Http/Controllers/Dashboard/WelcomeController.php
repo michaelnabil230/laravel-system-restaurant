@@ -25,12 +25,12 @@ class WelcomeController extends Controller
         $categories_count = Category::count();
         $products_count = Product::count();
         $orders = Order::take(15)->latest()->get();
-        $Chart = $this->Chart();
+        $chart = $this->chart();
 
-        return view('dashboard.welcome', compact('admins_count', 'orders_count', 'categories_count', 'products_count', 'orders', 'Chart'));
-    } //end of index
+        return view('dashboard.welcome', compact('admins_count', 'orders_count', 'categories_count', 'products_count', 'orders', 'chart'));
+    }
 
-    private function Chart()
+    private function chart()
     {
         /* Start data Years  */
         $ThisYear = Order::ByYear(date("Y"));
@@ -89,7 +89,7 @@ class WelcomeController extends Controller
         return response()->json([
             'Sales30DayesDataDay' => $Sales30DayesDataDay,
             'Sales30DayesLabelsDay' => $Sales30DayesLabelsDay,
-            'text' => __('site.sales_day', ['day' => date('Y') . '-' . $request->day]),
+            'text' => __('dashboard.sales_day', ['day' => date('Y') . '-' . $request->day]),
         ]);
     }
 
@@ -115,7 +115,7 @@ class WelcomeController extends Controller
             'Sales2YearsYearInMonth' => $Sales2YearsYearInMonth,
             'Sales2YearsLastYearInMonth' => $Sales2YearsLastYearInMonth,
             'Sales2YearsLabels' => $Sales2YearsLabels,
-            'text' => __('site.sales_month', ['month' => date("F", mktime(0, 0, 0, $month, 10))]),
+            'text' => __('dashboard.sales_month', ['month' => date("F", mktime(0, 0, 0, $month, 10))]),
         ]);
     }
-} //end of controller
+}

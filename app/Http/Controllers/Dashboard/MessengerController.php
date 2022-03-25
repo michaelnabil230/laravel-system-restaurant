@@ -12,15 +12,16 @@ class MessengerController extends Controller
 {
     public function index()
     {
-        $topics = QaTopic::where(function ($query) {
-            $query
-                ->where('creator_id', auth()->id())
-                ->orWhere('receiver_id', auth()->id());
-        })
+        $topics = QaTopic::query()
+            ->where(function ($query) {
+                $query
+                    ->where('creator_id', auth()->id())
+                    ->orWhere('receiver_id', auth()->id());
+            })
             ->latest()
             ->paginate();
 
-        $title = __('site.all_messages');
+        $title = __('dashboard.all_messages');
         $unreads = $this->unreadTopics();
 
         return view('dashboard.messenger.index', compact('topics', 'title', 'unreads'));
@@ -81,7 +82,7 @@ class MessengerController extends Controller
             'content' => $request->content,
         ]);
 
-        return redirect()->route('dashboard.messenger.index');
+        return to_route('dashboard.messenger.index');
     }
 
     public function showMessages(QaTopic $topic)
@@ -112,12 +113,12 @@ class MessengerController extends Controller
 
         $topic->delete();
 
-        return redirect()->route('dashboard.messenger.index');
+        return to_route('dashboard.messenger.index');
     }
 
     public function showInbox()
     {
-        $title = __('site.inbox');
+        $title = __('dashboard.inbox');
 
         $topics = QaTopic::where('receiver_id', auth()->id())
             ->latest()
@@ -130,7 +131,7 @@ class MessengerController extends Controller
 
     public function showOutbox()
     {
-        $title = __('site.outbox');
+        $title = __('dashboard.outbox');
 
         $topics = QaTopic::where('creator_id', auth()->id())
             ->latest()
@@ -150,7 +151,7 @@ class MessengerController extends Controller
             'content' => $request->input('content'),
         ]);
 
-        return redirect()->route('dashboard.messenger.index');
+        return to_route('dashboard.messenger.index');
     }
 
     public function showReply(QaTopic $topic)

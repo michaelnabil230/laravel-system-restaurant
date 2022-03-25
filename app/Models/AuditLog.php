@@ -4,38 +4,40 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\User as Admin;
 
 class AuditLog extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'description',
         'subject_id',
         'subject_type',
-        'user_id',
+        'admin_id',
         'properties',
         'host',
     ];
+
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'properties' => 'collection',
     ];
 
     /**
-     * Get the user that owns the AuditLog
+     * Get the admin that owns the AuditLog
      *
      * @return BelongsTo
      */
-    public function user()
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class, 'id', 'admin_id');
     }
 }

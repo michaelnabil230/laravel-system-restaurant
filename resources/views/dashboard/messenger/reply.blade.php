@@ -1,6 +1,6 @@
 @extends('dashboard.messenger.template')
 
-@section('title', __('site.new_message'))
+@section('title', __('dashboard.new_message'))
 
 @section('messenger-content')
 
@@ -12,19 +12,17 @@
                         @csrf
                         <div class="form-group">
                             <label class="control-label" for="content">
-                                @lang('site.content')
+                                @lang('dashboard.content')
                             </label>
-                            <textarea name="content"
-                                      class="form-control @error ('content') is-invalid @enderror"
-                                      id="content"
-                                      placeholder="@lang('site.content')">{{ old('content') }}</textarea>
-                            @error ('content')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <textarea name="content" class="form-control @error('content') is-invalid @enderror" id="content"
+                                placeholder="@lang('dashboard.content')">{{ old('content') }}</textarea>
+                            @error('content')
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
-                                @lang('site.reply')
+                                @lang('dashboard.reply')
                             </button>
                         </div>
                     </form>

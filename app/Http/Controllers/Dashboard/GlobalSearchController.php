@@ -23,7 +23,7 @@ class GlobalSearchController extends Controller
         Product::class => 'products',
     ];
 
-    public function search(Request $request)
+    public function __invoke(Request $request)
     {
         $search = $request->input('search');
 
@@ -39,7 +39,8 @@ class GlobalSearchController extends Controller
                 $query->orWhere($field, 'LIKE', '%' . $term . '%');
             }
 
-            $results = $query->take(10)
+            $results = $query
+                ->take(10)
                 ->get();
 
             foreach ($results as $result) {

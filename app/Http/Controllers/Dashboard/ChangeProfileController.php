@@ -12,15 +12,15 @@ class ChangeProfileController extends Controller
     {
         auth()->user()->update($request->validated());
 
-        session()->flash('success', __('site.updated_successfully'));
-        return redirect()->route('dashboard.profile.edit');
+        session()->flash('success', __('dashboard.updated_successfully'));
+        return to_route('dashboard.profile.edit');
     }
 
     public function updateProfile(UpdateProfileRequest $request)
     {
         auth()->user()->update($request->validated());
-        session()->flash('success', __('site.updated_successfully'));
-        return redirect()->route('dashboard.profile.edit');
+        session()->flash('success', __('dashboard.updated_successfully'));
+        return to_route('dashboard.profile.edit');
     }
 
     public function destroy()
@@ -30,7 +30,7 @@ class ChangeProfileController extends Controller
             'email' => time() . '_' . $user->email,
         ]);
         $user->delete();
-        session()->flash('success', __('site.deleted_successfully'));
-        return redirect()->route('admin.login');
+        session()->flash('success', __('dashboard.deleted_successfully'));
+        return to_route('admin.login');
     }
 }

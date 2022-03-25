@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class QaTopic extends Model
 {
     use Auditable;
+
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'subject',
@@ -21,15 +22,26 @@ class QaTopic extends Model
         'sent_at',
     ];
 
+    /**
+     * Get all of the messages for the QaTopic
+     *
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(QaMessage::class, 'topic_id')->latest();
+    }
+
     public static function unreadCount()
     {
-        $topics = QaTopic::where(function ($query) {
-            $query
-                ->where('creator_id', auth()->id())
-                ->orWhere('receiver_id', auth()->id());
-        })
+        $topics = self::query()
+            ->where(function ($query) {
+                $query
+                    ->where('creator_id', auth()->id())
+                    ->orWhere('receiver_id', auth()->id());
+            })
             ->with('messages')
-           ->latest()
+            ->latest()
             ->get();
 
         $unreadCount = 0;
@@ -48,16 +60,6 @@ class QaTopic extends Model
     public function hasUnreads()
     {
         return $this->messages()->whereNull('read_at')->where('sender_id', '!=', auth()->id())->exists();
-    }
-
-    /**
-     * Get all of the messages for the QaTopic
-     *
-     * @return HasMany
-     */
-    public function messages()
-    {
-        return $this->hasMany(QaMessage::class, 'topic_id')->latest();
     }
 
     public function receiverOrCreator()

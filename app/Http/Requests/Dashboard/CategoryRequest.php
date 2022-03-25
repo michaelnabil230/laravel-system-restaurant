@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Dashboard;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class CategoryRequest extends FormRequest
 {
@@ -37,14 +38,15 @@ class CategoryRequest extends FormRequest
                 'max:2147483647'
             ],
         ];
-        foreach (config('config_me.locales') as $locale) {
+        foreach (LaravelLocalization::getSupportedLocales() as $locale) {
             $rules += [
                 'name.' . $locale => [
                     'required',
                     Rule::unique('categories', 'name->' . $locale)
                 ],
             ];
-        } //end of for each
+        }
+
         return $rules;
     }
 
@@ -58,14 +60,14 @@ class CategoryRequest extends FormRequest
                 'max:2147483647'
             ],
         ];
-        foreach (config('config_me.locales') as $locale) {
+        foreach (LaravelLocalization::getSupportedLocales() as $locale) {
             $rules += [
                 'name.' . $locale => [
                     'required',
                     Rule::unique('categories', 'name->' . $locale)->ignore($this->category->id, 'id')
                 ],
             ];
-        } //end of for each
+        }
 
         return $rules;
     }

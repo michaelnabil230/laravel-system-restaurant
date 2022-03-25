@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQaMessagesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,8 @@ class CreateQaMessagesTable extends Migration
     {
         Schema::create('qa_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('topic_id')->constrained('qa_topics')->onDelete('cascade');
-            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('topic_id')->constrained('qa_topics')->cascadeOnDelete();
+            $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
             $table->timestamp('read_at')->nullable();
             $table->text('content');
             $table->timestamps();
@@ -32,4 +32,4 @@ class CreateQaMessagesTable extends Migration
     {
         Schema::dropIfExists('qa_messages');
     }
-}
+};

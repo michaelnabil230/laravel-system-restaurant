@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderProductTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,8 @@ class CreateOrderProductTable extends Migration
     {
         Schema::create('order_product', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->integer('quantity')->default(1);
         });
     }
@@ -30,4 +30,4 @@ class CreateOrderProductTable extends Migration
     {
         Schema::dropIfExists('order_product');
     }
-}
+};

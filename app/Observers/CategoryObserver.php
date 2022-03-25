@@ -9,7 +9,7 @@ class CategoryObserver
     /**
      * Handle the category "creating" event.
      *
-     * @param \App\Category $category
+     * @param Category $category
      * @return void
      */
     public function creating(Category $category)
@@ -31,7 +31,7 @@ class CategoryObserver
     /**
      * Handle the category "updating" event.
      *
-     * @param \App\Category $category
+     * @param Category $category
      * @return void
      */
     public function updating(Category $category)
@@ -71,7 +71,7 @@ class CategoryObserver
     /**
      * Handle the category "deleted" event.
      *
-     * @param \App\Category $category
+     * @param Category $category
      * @return void
      */
     public function deleted(Category $category)

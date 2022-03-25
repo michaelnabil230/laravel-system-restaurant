@@ -5,15 +5,15 @@
 @section('messenger-content')
     <div class="row">
         <p>
-            @if($topic->receiverOrCreator() !== null && !$topic->receiverOrCreator()->trashed())
+            @if ($topic->receiverOrCreator() !== null && !$topic->receiverOrCreator()->trashed())
                 <a href="{{ route('dashboard.messenger.reply', [$topic->id]) }}" class="btn btn-primary">
-                    @lang('site.reply')
+                    @lang('dashboard.reply')
                 </a>
             @endif
         </p>
         <div class="col-lg-12">
             <div class="list-group">
-                @foreach($topic->messages as $message)
+                @foreach ($topic->messages as $message)
                     <div class="row list-group-item">
                         <div class="row">
                             <div class="col col-lg-10">

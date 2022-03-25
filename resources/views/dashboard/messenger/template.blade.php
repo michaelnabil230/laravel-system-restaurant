@@ -2,53 +2,55 @@
 
 @section('content')
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark">@yield('title')</h1>
-                    </div><!-- /.col -->
+                    </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-left">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard.welcome') }}"><i
-                                        class="fa fa-home"></i> @lang('site.dashboard')</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('dashboard.welcome') }}"><i class="fa fa-home"></i>
+                                    @lang('dashboard.dashboard')
+                                </a>
+                            </li>
                             <li class="breadcrumb-item active">@yield('title')</li>
                         </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="content">
             <div class="row">
                 <div class="col-lg-3">
                     <p>
                         <a href="{{ route('dashboard.messenger.createTopic') }}" class="btn btn-primary btn-block">
-                            @lang('site.new_message')
+                            @lang('dashboard.new_message')
                         </a>
                     </p>
                     <div class="list-group">
                         <a href="{{ route('dashboard.messenger.index') }}" class="list-group-item">
-                            @lang('site.all_messages')
+                            @lang('dashboard.all_messages')
                         </a>
                         <a href="{{ route('dashboard.messenger.showInbox') }}" class="list-group-item">
-                            @if($unreads['inbox'] > 0)
+                            @if ($unreads['inbox'] > 0)
                                 <strong>
-                                    @lang('site.inbox')
+                                    @lang('dashboard.inbox')
                                     ({{ $unreads['inbox'] }})
                                 </strong>
                             @else
-                                @lang('site.inbox')
+                                @lang('dashboard.inbox')
                             @endif
                         </a>
                         <a href="{{ route('dashboard.messenger.showOutbox') }}" class="list-group-item">
-                            @if($unreads['outbox'] > 0)
+                            @if ($unreads['outbox'] > 0)
                                 <strong>
-                                    @lang('site.outbox')
+                                    @lang('dashboard.outbox')
                                     ({{ $unreads['outbox'] }})
                                 </strong>
                             @else
-                                @lang('site.outbox')
+                                @lang('dashboard.outbox')
                             @endif
                         </a>
                     </div>
@@ -59,6 +61,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection

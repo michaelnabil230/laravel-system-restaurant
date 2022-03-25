@@ -1,8 +1,12 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\AdminSeeder;
+use Database\Seeders\SettingSeeder;
+use Database\Seeders\PermissionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,25 +17,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-
-        $models = config('config_me.models');
-        $maps = config('config_me.maps');
-        foreach ($models as $index => $model) {
-            foreach ($maps as $map) {
-                Permission::create(['name' => $map . '_' . $model]);
-            }
-        }
-
-        Role::create(['name' => 'admin']);
-        $role = Role::create(['name' => 'super_admin']);
-        $role->givePermissionTo(Permission::all());
-
-        $user = \App\Models\User::create([
-            'name' => 'Super admin',
-            'email' => 'super_admin@admin.com',
-            'password' => bcrypt('super_admin@admin.com'),
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            AdminSeeder::class,
+            SettingSeeder::class,
         ]);
-        $user->syncRoles('super_admin');
     }
 }

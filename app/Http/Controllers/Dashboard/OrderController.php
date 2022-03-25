@@ -13,23 +13,23 @@ class OrderController extends Controller
 {
     public function __construct()
     {
-        //create read update delete
         $this->middleware(['permission:read_orders'])->only('index');
         $this->middleware(['permission:create_orders'])->only('create');
         $this->middleware(['permission:update_orders'])->only('edit');
         $this->middleware(['permission:delete_orders'])->only('destroy');
-    } //end of constructor
+    }
 
     public function index(Request $request)
     {
-        $orders = Order::when($request->search, function ($query) use ($request) {
-            return $query->Where('id', $request->search);
-        })
+        $orders = Order::query()
+            ->when($request->search, function ($query) use ($request) {
+                return $query->Where('id', $request->search);
+            })
             ->latest()
             ->paginate();
 
         return view('dashboard.orders.index', compact('orders'));
-    } //end of index
+    }
 
     public function create()
     {
@@ -44,7 +44,7 @@ class OrderController extends Controller
 
         $url = route('dashboard.orders.store');
         $method = 'Post';
-        $form_btn_order_name = __('site.add_order');
+        $form_btn_order_name = __('dashboard.add_order');
         $form_btn_order_icon = 'fa fa-plus';
 
         return view('dashboard.orders.create', compact(
@@ -56,7 +56,7 @@ class OrderController extends Controller
             'form_btn_order_icon',
             'drivers'
         ));
-    } //end of create
+    }
 
     public function store(Request $request)
     {
@@ -65,28 +65,28 @@ class OrderController extends Controller
             'type_status' => 'required',
             'payment' => 'required',
         ]);
-        $this->CreateOrUpdate($request);
+        $this->createOrUpdate($request);
 
-        session()->flash('success', __('site.added_successfully'));
-        return redirect()->route('dashboard.orders.index');
-    } //end of store
+        session()->flash('success', __('dashboard.added_successfully'));
+        return to_route('dashboard.orders.index');
+    }
 
-    private function CreateOrUpdate($request)
+    private function createOrUpdate($request)
     {
         $total_price = 0;
         foreach ($request->products as $id => $quantity) {
-            $product = Product::FindOrFail($id);
+            $product = Product::findOrFail($id);
             $total_price += $product->price * $quantity['quantity'];
-        } //end of foreach
+        }
 
         $sale = $request->sale;
-        $finel_total_price = $sale > 0 ? $total_price - ($total_price * $sale / 100) : $total_price;
-        $finel_total_price = ($finel_total_price * setting('value_added') / 100) + $finel_total_price;
+        $final_total_price = $sale > 0 ? $total_price - ($total_price * $sale / 100) : $total_price;
+        $final_total_price = ($final_total_price * setting('value_added') / 100) + $final_total_price;
 
-        $request_data = [
-            'user_id' => auth()->id(),
+        $validated = [
+            'admin_id' => auth()->id(),
             'total_price' => $total_price,
-            'finel_total_price' => $finel_total_price,
+            'final_total_price' => $final_total_price,
             'sale' => $sale,
             'paid' => $request->paid,
             'note' => $request->note,
@@ -95,21 +95,20 @@ class OrderController extends Controller
             'driver_id' => $request->driver_id,
         ];
 
-        $order = Order::create($request_data);
+        $order = Order::create($validated);
         $order->products()->attach($request->products);
-    } //end of CreateOrUpdate
+    }
 
     public function edit(Order $order)
     {
+        $drivers = Driver::get();
         $categories = Category::orderBy('position', 'asc')->with('products')->whereHas('products')->latest()->get();
         $url = route('dashboard.orders.update', $order->id);
         $method = 'put';
-        $form_btn_order_name = __('site.edit_order');
+        $form_btn_order_name = __('dashboard.edit_order');
         $form_btn_order_icon = 'fa fa-edit';
-
         $quantity_products = $order->products->pluck('pivot.quantity', 'id')->toArray();
 
-        $drivers = Driver::get();
         return view('dashboard.orders.edit', compact(
             'categories',
             'order',
@@ -120,56 +119,55 @@ class OrderController extends Controller
             'form_btn_order_icon',
             'drivers'
         ));
-    } //end of edit order
+    }
 
     public function update(Request $request, Order $order)
     {
         $request->validate([
-            'products' => 'required|array',
+            'products' => ['required', 'array'],
         ]);
-        $order->delete();
-        $this->CreateOrUpdate($request);
 
-        session()->flash('success', __('site.updated_successfully'));
-        return redirect()->route('dashboard.orders.index');
-    } //end of update order
+        $order->delete();
+        $this->createOrUpdate($request);
+
+        session()->flash('success', __('dashboard.updated_successfully'));
+        return to_route('dashboard.orders.index');
+    }
 
     public function offline(Request $request)
     {
         foreach ($request->orders as $order) {
             $request = json_decode($order, true);
-            $this->CreateOrUpdate((object) $request);
+            $this->createOrUpdate((object) $request);
         }
 
-        session()->flash('success', __('site.added_successfully'));
-        return redirect()->route('dashboard.orders.index');
-    } //end of offline order
+        session()->flash('success', __('dashboard.added_successfully'));
+        return to_route('dashboard.orders.index');
+    }
 
     public function destroy(Order $order)
     {
         $order->delete();
-        session()->flash('success', __('site.deleted_successfully'));
-        return redirect()->route('dashboard.orders.index');
+        session()->flash('success', __('dashboard.deleted_successfully'));
+        return to_route('dashboard.orders.index');
     }
 
     public function products(Order $order)
     {
         $products = $order->products;
         return view('dashboard.orders._products', compact('order', 'products'));
-    } //end of products
+    }
 
     public function update_status(Order $order)
     {
-        $status = $order->status['index'];
-        if ($status != 4) {
-            $order->update([
-                'status' => $status++,
-            ]);
+        if ($order->status['index'] != 4) {
+            $order->increment('status');
         }
+
         return response()->json([
             'text' => $order->status['status'],
             'index' => $order->status['index'],
-            'success' => __('site.updated_successfully'),
+            'success' => __('dashboard.updated_successfully'),
         ]);
     }
-} //end of controller
+}
