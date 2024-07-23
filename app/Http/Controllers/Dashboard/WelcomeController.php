@@ -60,6 +60,7 @@ class WelcomeController extends Controller
         }
         $sales30DayesDataInMonth = json_encode(array_values($dataInMonth));
         $sales30DayesLabelsInMonth = json_encode($sales30DayesLabelsInMonth);
+
         /* End Order in 30 days */
         return [
             'Sales2YearsLabelsMonths' => $Sales2YearsLabelsMonths,
